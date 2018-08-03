@@ -3,7 +3,7 @@
 # valor ask cacacteres A = 41, S = 53, D = 44, F = 46
 cor:            .word 0x00000fff
 cor_mapa:       .word 0x000000e6
-bitmap_address: .word 0x00002000
+bitmap_address: .word 0x10010000
 key_board_addr: .word 0x00007f04
 bitmap_size:    .word 16384 #  512 x 256 = 131072 / 8 Tamano de Pixel = 16284 pixls
 .text
@@ -17,37 +17,29 @@ jal desenhar_mapa_1
 addi $v0, $zero,10
 syscall		
 
-#Procedimento para mover o personagem
-#$a0 -> Argumento com o endereço do caractere a ser lido
-#$a1 -> Endereço de memória da posição do personagem
-#$a2 -> Cor do personagem
-mover_pacman:
-	#passando o endereço
-	addi $t0, $a0,0
-	addi $t1, $a1,0
-	addi $t2, $a2,0
-	##################
-	lw   $t3, 0($t0) #carregando caractere
-	addi $t4, $t1,0  #Variavel auxiliar
-	
-	bne  $t3, 41, exit_a
-		addi $t4, $t4, -256
-		lw   $t5,0($t4)    #Carregando cor
-		beq  $t5, 0x000000e6, exir_cmp_1 #Verificando se é a cor do mapa
-			sw $zero, 0($t1) 			
+
+
+
+#Procedimento utilizado para efetuar a movimentação de um personagem genérico
+#$a0 -> Argumento com o endereço da posicao do personagem
+#$a1 -> Argumento com o endereço da próxima casa em que o personagem vai
+#$a2 -> Argumento com a cor do personagem a ser pintada no mapa
+pintar_movimento:
+	#Salvando argumentos em temoprários
+	addi $t0, $a0, 0
+	addi $t1, $a1, 0
+	addi $t2, $a2, 0
+	addi $v0, $zero, 0 #zerando retorno
+	lw   $t3, 0($t1) #Guardando em $t3 a cor contida na próxima casa que o personagem vai
+	beq  $t3, 0x000000e6, exit_cmp_1 #Verificando se é a cor do mapa
+			sw $zero, 0($t0) 			
 			addi $v0, $zero,31
 			addi $a0, $zero,500
-			syscall			
-			addi $t1,$t1,-256
-			sw   $t2,0($t1)
-		exir_cmp_1:
-		
-	exit_a:
-	
-	jr $ra
-
-
-
+			syscall		   #espera meio segundo	
+			sw   $t2,0($t1)    #pinta o personagem na próxima casa
+			addi $v0, $zero, 1 #Retorno indicando que personagem se mouveu
+	exit_cmp_1:
+jr $ra
 	
 
 #Procedimento para escrever linha por linha
