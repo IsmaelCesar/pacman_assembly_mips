@@ -16,6 +16,7 @@
 .data
 cor:            .word 0x00000fff
 corPac:		.word 0x00f4f442
+corVernelha:     .word 0x00ff0000
 corComida:      .word 0x00ffffff	
 cor_mapa:       .word 0x000000e6
 vidas:          .word 3  	#Quantidade de vidas

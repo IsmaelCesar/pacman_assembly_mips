@@ -116,31 +116,81 @@ desenhar_coracao_funtion:
 	sw   $ra,0($sp)
 	##############
 	addi $t0,$a0,0 #salvando endereco inicial em $t0
+	addi $t1,$t0,0 #registrador auxiliar para incremento
 	
 	#desenhando pontas do coração
+	addi $t1,$t1,4
+	addi $sp,$sp,-8
+	#Salvando Registros
+	sw   $t0,0($sp)
+	sw   $t1,4($sp)
+	desenhar_obstaculo($t1,1,1,corVernelha,bitmap_address)
+	lw   $t0,0($sp)
+	lw   $t1,4($sp)
 	
+	addi $t1,$t1,8
+	
+	sw   $t0,0($sp)
+	sw   $t1,4($sp)
+	desenhar_obstaculo($t1,1,1,corVernelha,bitmap_address)
+	lw   $t0,0($sp)
+	lw   $t1,4($sp)
+	
+	add $t1,$zero,$t0 #reinicializando $t1
+	addi $t1,$t1,256
+	sw   $t0,0($sp)
+	sw   $t1,4($sp)
+	desenhar_obstaculo($t1,5,2,corVernelha,bitmap_address)
+	lw   $t0,0($sp)
+	lw   $t1,4($sp)
+	
+	addi $t1,$t1,516 #256*2+4 
+	sw   $t0,0($sp)
+	sw   $t1,4($sp)
+	desenhar_obstaculo($t1,3,1,corVernelha,bitmap_address)
+	lw   $t0,0($sp)
+	lw   $t1,4($sp)
+	
+	add $t1,$zero,$t0 #reinicializando $t1
+	addi $t1,$t1,8
+	sw   $t0,0($sp)
+	sw   $t1,4($sp)
+	desenhar_obstaculo($t1,1,1,corVernelha,bitmap_address)
+	addi $sp,$sp,8
+	#############################
 	
 	lw $ra,0($sp)
 	addi $sp,$sp,4
 	jr $ra
 
 #Procedimento para desenhar vidas ao lado do mapa
-# $a0 -> Argumento com o endereço inicial da caixinha(Será uma caixa 5x5)
+# $a0 -> Argumento com o endereço inicial da caixinha(Será uma caixa 5x5) 
+#        Relativo as três vidas a serem desenhadas 
 .macro desenhar_vidas(%endIni)
 	add $a0,$zero,%endIni
 	jal desenhar_vida_function
 .end_macro
 desenhar_vidas_function:
-	addi $sp,$sp,-4
+	addi $sp,$sp,-8
 	sw   $ra,0($sp)
 	##############
-	
+	sw   $a0,4($sp)
+	desenhar_coracao($a0)
+	lw   $a0,4($sp)
+	addi $a0,$a0,44
+	sw   $a0,4($sp)
+	desenhar_coracao($a0)
+	lw   $a0,4($sp)
+	addi $a0,$a0,44
+	sw   $a0,4($sp)
+	desenhar_coracao($a0)
+	lw   $a0,4($sp)
 	
 	sw   $ra,0($sp)
-	addi $sp,$sp,4
+	addi $sp,$sp,8
 	jal $ra	
 
-###################################### VIDAS ################################################################
+######################################################################################################
 
 
 #Procedimento para desenhar o numero do level
@@ -158,6 +208,8 @@ desenhar_lado_function:
         desenharL(448,3008,corPac,bitmap_address)
         lw   $t0,4($sp)
         desenhar_numero($t0,732,corPac,bitmap_address)       	        
+        
+        desenhar_vidas(6792)
         
         lw   $ra,0($sp)
         addi $sp,$sp,8
