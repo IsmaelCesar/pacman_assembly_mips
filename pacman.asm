@@ -654,6 +654,34 @@ calcular_desenhar($s0)
 #Sequencia de comandos para desenhar acomida
 desenhar_comida(6920,7176,0)
 desenhar_comida(6668,6672,1)
+desenhar_comida(6928,6940,1)
+desenhar_comida(6944,6972,1)
+desenhar_comida(6980,7008,1)
+desenhar_comida(6980,7008,1)
+desenhar_comida(7012,7024,1)
+desenhar_comida(7028,7032,1)
+desenhar_comida(6768,6772,1)
+desenhar_comida(5384,6152,0)
+desenhar_comida(6156,6160,1)
+desenhar_comida(5392,5396,1)
+desenhar_comida(2840,6936,0)
+desenhar_comida(5660,5688,1)
+desenhar_comida(6432,6504,1)
+desenhar_comida(2916,7268,0)
+desenhar_comida(3872,5664,0)
+desenhar_comida(5156,5208,1)
+desenhar_comida(3676,5980,0)
+desenhar_comida(6212,6468,0)
+desenhar_comida(5700,5728,1)
+desenhar_comida(5944,5948,1)
+desenhar_comida(6416,6420,1)
+desenhar_comida(6508,6512,1)
+desenhar_comida(6256,6260,1)
+desenhar_comida(5484,5496,1)
+desenhar_comida(6004,6008,1)
+
+
+
 
 	
 addi $v0, $zero,10
