@@ -177,18 +177,32 @@ desenhar_vidas_function:
 	sw   $a0,4($sp)
 	desenhar_coracao($a0)
 	lw   $a0,4($sp)
-	addi $a0,$a0,44
+	addi $a0,$a0,28
 	sw   $a0,4($sp)
 	desenhar_coracao($a0)
 	lw   $a0,4($sp)
-	addi $a0,$a0,44
+	addi $a0,$a0,28
 	sw   $a0,4($sp)
 	desenhar_coracao($a0)
 	lw   $a0,4($sp)
 	
-	sw   $ra,0($sp)
+	lw   $ra,0($sp)
 	addi $sp,$sp,8
 	jr $ra	
+
+#Procedimento para apagar a vida do mapa
+# $a0 -> Argumento com o endereço inicial da caixinha 5x5 onde a vida está contida
+.macro apagar_vida(%endIni)
+	add $a0,$zero,%endIni
+	jal apagar_vida_function
+.end_macro
+apagar_vida_function:
+	addi $sp,$sp,-4
+	sw   $ra,0($sp)
+	desenhar_obstaculo($a0,5,5,corPreta,bitmap_address)
+	lw $ra,0($sp)
+	addi $sp,$sp,4
+	jr $ra
 
 ######################################################################################################
 
