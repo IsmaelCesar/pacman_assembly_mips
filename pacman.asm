@@ -12,6 +12,7 @@
 #########################################################			
 .include "mapa.asm"
 .include "numeros.asm"
+.include "dizeres.asm"
 .data
 cor:            .word 0x00000fff
 corPac:		.word 0x00f4f442
@@ -43,54 +44,14 @@ pintar_movimento:
 jr $ra
 	
 
-desenhar_lado:
-
-	addi $a0,$zero,396
-	addi $a1,$zero,2956
-	lw   $a2, corPac	
-	lw   $a3, bitmap_address
-        jal desenharL
-        lw   $v0,bitmap_address
-        lw   $a3,cor_mapa
-        #jal desenharV
-        
-	
-#	addi $a0,$zero,2412
-#	addi $a1,$zero,3948
-#	lw   $a2, corPac	
-#	lw   $a3, bitmap_address
- #       jal desenharV
-
-# $a0 é endereço inicial da coluna
-# $a1 é o endereço final da coluna
-# $a3 é endereço base
-# $a2 cor
-desenharL:
-	addi $sp,$sp,-20
-	sw   $a0,0($sp)
-	sw   $a1,4($sp)
-	sw   $a2,8($sp)
-	sw   $a3,12($sp)
-	sw   $ra,16($sp)
-	#jal 	desenhar_coluna($a0,$a1,$a2,$a3)
-	lw $a0, 4($sp) #passa o valor do fim da coluna
-	addi $a1, $zero, 4
-	addi $a2, $zero, 2
-	lw $a3, 8($sp)
-	lw   $v0,bitmap_address	
-	#jal 	desenhar_obstaculo($a0,$a1,$a2,corPac,$v0)
-	lw $ra,16($sp)
-	addi $sp,$sp,20
-	jr $ra
-
-
-
 .globl main
 main:
 
 jal desenhar_mapa_1
 addi $s0, $zero,789
 calcular_desenhar($s0) 
+jal desenhar_lado
+
 	
 	
 	#Sequencia de comandos para desenhar acomida
