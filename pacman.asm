@@ -2,10 +2,10 @@
 #                  Como rodar? 				#
 #########################################################
 # Tamanho de pixel : 8x8				#
-# Dimens√£o do display: 512 x 256			#
+# Dimens„o do display: 512 x 256			#
 # valor ask cacacteres A = 41, S = 53, D = 44, F = 46   #
 #########################################################
-#   O m√≥dulo principal √© o pacman, rodar ele primeiro   #
+#   O mÛdulo principal È o pacman, rodar ele primeiro   #
 #########################################################
 #   em "settings -> memory configuration" setar valor   #
 #   default.						#
@@ -22,24 +22,23 @@ bitmap_address: .word 0x10010000
 key_board_addr: .word 0x00007f04
 bitmap_size:    .word 16384 #  512 x 256 = 131072 / 8 Tamano de Pixel = 16284 pixls
 .text	
-
-#Procedimento utilizado para efetuar a movimenta√ß√£o de um personagem gen√©rico
-#$a0 -> Argumento com o endere√ßo da posicao do personagem
-#$a1 -> Argumento com o endere√ßo da pr√≥xima casa em que o personagem vai
+#Procedimento utilizado para efetuar a movimentaÁ„o de um personagem genÈrico
+#$a0 -> Argumento com o endereÁo da posicao do personagem
+#$a1 -> Argumento com o endereÁo da prÛxima casa em que o personagem vai
 #$a2 -> Argumento com a cor do personagem a ser pintada no mapa
 pintar_movimento:
-	#Salvando argumentos em temopr√°rios
+	#Salvando argumentos em temopr·rios
 	addi $t0, $a0, 0
 	addi $t1, $a1, 0
 	addi $t2, $a2, 0
 	addi $v0, $zero, 0 #zerando retorno
-	lw   $t3, 0($t1) #Guardando em $t3 a cor contida na pr√≥xima casa que o personagem vai
-	beq  $t3, 0x000000e6, exit_cmp_1 #Verificando se √© a cor do mapa
+	lw   $t3, 0($t1) #Guardando em $t3 a cor contida na prÛxima casa que o personagem vai
+	beq  $t3, 0x000000e6, exit_cmp_1 #Verificando se È a cor do mapa
 			sw $zero, 0($t0) 			
 			addi $v0, $zero,31
 			addi $a0, $zero,500
 			syscall		   #espera meio segundo	
-			sw   $t2,0($t1)    #pinta o personagem na pr√≥xima casa
+			sw   $t2,0($t1)    #pinta o personagem na prÛxima casa
 			addi $v0, $zero, 1 #Retorno indicando que personagem se mouveu
 	exit_cmp_1:
 jr $ra
@@ -49,9 +48,9 @@ jr $ra
 main:
 
 jal desenhar_mapa_1
-addi $s0, $zero,789
+addi $s0, $zero,0
 calcular_desenhar($s0) 
-desenhar_lado(2)
+desenhar_lado(1)
 	
 				
 addi $v0, $zero,10
