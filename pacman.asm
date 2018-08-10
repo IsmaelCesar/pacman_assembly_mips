@@ -621,9 +621,10 @@ desenhar_linha_comida_function:
 	lw $t1, bitmap_address
 	
 	bne $a2,1,else 
-		addi $t4,$zero,8
+		addi $t5,$zero,8
+		j end_if_opc_linha_coluna
 	else:
-		addi $t4,$zero,512
+		addi $t5,$zero,512
 	end_if_opc_linha_coluna:
 	add $t0,$t0,$a0   #Salvando o endereço inicial em $t0
 	add $t1,$t1,$a1   #Salvando o endereço inicial em $t1
@@ -634,13 +635,10 @@ desenhar_linha_comida_function:
 		slt $t4,$t2,$t1 
 		beq $t4,0,exit_loop_desenhar_comida #Dá o branch
 			sw $t3,0($t2)	
-			add $t2,$t2,$t4
+			add $t2,$t2,$t5
 			j loop_desenhar_comida
 	exit_loop_desenhar_comida:
 	jr $ra 
-
-
-
 
 .globl main
 main:
