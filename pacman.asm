@@ -385,6 +385,60 @@ sw   $ra,0($sp)
 	desenhar_obstaculo(6216,5,3,cor_mapa,bitmap_address)
 	desenhar_obstaculo(6232,1,5,cor_mapa,bitmap_address)
 	desenhar_obstaculo(6240,5,5,cor_mapa,bitmap_address)
+	
+	###########################
+	#      Desenhado comida   #
+	###########################
+	desenhar_comida(7432,7540,1)
+	desenhar_comida(5896,7176,0)
+	desenhar_comida(5904,5948,1)
+	desenhar_comida(6432,7200,0)
+	desenhar_comida(6952,6972,1)
+	desenhar_comida(6456,6460,1)
+	
+	desenhar_comida(5956,6000,1)
+	desenhar_comida(6468,6472,1)
+	desenhar_comida(6236,7516,0)
+	desenhar_comida(6980,7000,1)
+	desenhar_comida(6260,7540,0)
+
+	desenhar_comida(5400,5436,1)
+	desenhar_comida(5444,5480,1)
+	desenhar_comida(4920,4924,1)
+	desenhar_comida(4932,4936,1)
+	#Parte do meio
+	desenhar_comida(1044,5908,0)
+	desenhar_comida(3360,5152,0)
+	desenhar_comida(4888,4892,1)
+	desenhar_comida(2348,4652,0)
+	desenhar_comida(2384,4688,0)
+	desenhar_comida(3156,3412,0)
+	desenhar_comida(3164,4956,0)
+	desenhar_comida(4960,5216,0)
+	desenhar_comida(1128,5992,0)
+	desenhar_comida(2648,2904,0)
+	desenhar_comida(2596,2852,0)
+	
+	#Parte superior
+	desenhar_comida(2080,2108,1)
+	desenhar_comida(2116,2144,1)
+	desenhar_comida(544,1824,0)
+	desenhar_comida(812,1580,0)
+	desenhar_comida(848,1616,0)
+	desenhar_comida(1072,1100,1)
+	desenhar_comida(560,588,1)
+	desenhar_comida(604,2396,0)
+	desenhar_comida(1136,1140,0)
+	desenhar_comida(884,1140,0)
+	#desenhando pontas
+	desenhar_comida(612,624,1)
+	desenhar_comida(528,540,1)
+	desenhar_comida(776,1032,0)
+	
+	desenhar_comida(1036,1040,1)
+	desenhar_comida(1592,1848,0)
+	desenhar_comida(1604,1860,0)
+		
 
 	lw $ra, 0($sp)
 	addi $sp,$sp,4
@@ -696,62 +750,10 @@ calcular_desenhar_function:
 .globl main
 main:
 
-jal desenhar_mapa_2
+jal desenhar_mapa_1
 addi $s0, $zero,0
 calcular_desenhar($s0) 
-	###########################
-	#      Desenhado comida   #
-	###########################
-	desenhar_comida(7432,7540,1)
-	desenhar_comida(5896,7176,0)
-	desenhar_comida(5904,5948,1)
-	desenhar_comida(6432,7200,0)
-	desenhar_comida(6952,6972,1)
-	desenhar_comida(6456,6460,1)
 	
-	desenhar_comida(5956,6000,1)
-	desenhar_comida(6468,6472,1)
-	desenhar_comida(6236,7516,0)
-	desenhar_comida(6980,7000,1)
-	desenhar_comida(6260,7540,0)
-
-	desenhar_comida(5400,5436,1)
-	desenhar_comida(5444,5480,1)
-	desenhar_comida(4920,4924,1)
-	desenhar_comida(4932,4936,1)
-	#Parte do meio
-	desenhar_comida(1044,5908,0)
-	desenhar_comida(3360,5152,0)
-	desenhar_comida(4888,4892,1)
-	desenhar_comida(2348,4652,0)
-	desenhar_comida(2384,4688,0)
-	desenhar_comida(3156,3412,0)
-	desenhar_comida(3164,4956,0)
-	desenhar_comida(4960,5216,0)
-	desenhar_comida(1128,5992,0)
-	desenhar_comida(2648,2904,0)
-	desenhar_comida(2596,2852,0)
-	
-	#Parte superior
-	desenhar_comida(2080,2108,1)
-	desenhar_comida(2116,2144,1)
-	desenhar_comida(544,1824,0)
-	desenhar_comida(812,1580,0)
-	desenhar_comida(848,1616,0)
-	desenhar_comida(1072,1100,1)
-	desenhar_comida(560,588,1)
-	desenhar_comida(604,2396,0)
-	desenhar_comida(1136,1140,0)
-	desenhar_comida(884,1140,0)
-	#desenhando pontas
-	desenhar_comida(612,624,1)
-	desenhar_comida(528,540,1)
-	desenhar_comida(776,1032,0)
-	
-	desenhar_comida(1036,1040,1)
-	desenhar_comida(1592,1848,0)
-	desenhar_comida(1604,1860,0)
-		
 	
 	#Sequencia de comandos para desenhar acomida
 	#Parte inferior do mapa
