@@ -2,7 +2,8 @@
 #Escolher tamanho de pixel 8x8 configuracao tamanho de display 512x256
 # valor ask cacacteres A = 41, S = 53, D = 44, F = 46
 cor:            .word 0x00000fff
-corPac:		.word 0x00f4f442	
+corPac:		.word 0x00f4f442
+corComida:      .word 0x00ffffff	
 cor_mapa:       .word 0x000000e6
 bitmap_address: .word 0x10010000
 key_board_addr: .word 0x00007f04
@@ -603,12 +604,51 @@ calcular_desenhar_function:
 	addi $sp, $sp,8
 	jr $ra
 
+#Procedimento para desenhar sequencias de alimentos para o pacman na linha(Da direita para esquerda)
+#Com o endereço inicial e final inclusos 
+#$a0 -> Argumento com o endereço inicial
+#$a1 -> Argumento com o endereço final
+#$a2 -> Valor indicando se deseja desenhar linha ou coluna $a2 = 1 então desenha linha
+#	$a2 = 0 então desenha coluna
+.macro desenhar_comida(%endIni, %endFin,%opc)
+	add $a0,$zero,%endIni
+	add $a1,$zero,%endFin
+	add $a2,$zero,%opc
+	jal desenhar_linha_comida_function
+.end_macro
+desenhar_linha_comida_function:
+	lw $t0, bitmap_address
+	lw $t1, bitmap_address
+	
+	bne $a2,1,else 
+		addi $t4,$zero,8
+	else:
+		addi $t4,$zero,512
+	end_if_opc_linha_coluna:
+	add $t0,$t0,$a0   #Salvando o endereço inicial em $t0
+	add $t1,$t1,$a1   #Salvando o endereço inicial em $t1
+	addi $t2,$t0,0    #inicializando $t2 para ser utilizado como incremento
+	lw $t3, corComida #Carregando cor comida
+	#sw $t3,0($t1)		
+	loop_desenhar_comida:
+		slt $t4,$t2,$t1 
+		beq $t4,0,exit_loop_desenhar_comida #Dá o branch
+			sw $t3,0($t2)	
+			add $t2,$t2,$t4
+			j loop_desenhar_comida
+	exit_loop_desenhar_comida:
+	jr $ra 
+
+
+
+
 .globl main
 main:
 
-jal desenhar_mapa_2
+jal desenhar_mapa_1
 addi $s0, $zero,0
 calcular_desenhar($s0) 
+desenhar_comida(7432,7540,1)
 #jal desenhar_lado
 
 	
