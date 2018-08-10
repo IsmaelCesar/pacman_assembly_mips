@@ -221,15 +221,15 @@ desenhar_coluna(376,1656,cor_mapa,bitmap_address)
 desenhar_linha(1388,1404,cor_mapa,bitmap_address)
 desenhar_coluna(1388,2156,cor_mapa,bitmap_address)
 desenhar_linha(1900,1916,cor_mapa,bitmap_address)
-desenhar_linha(2415,2428,cor_mapa,bitmap_address)
+desenhar_linha(2412,2428,cor_mapa,bitmap_address)
 desenhar_coluna(2412,3948,cor_mapa,bitmap_address)
 desenhar_linha(3692,3708,cor_mapa,bitmap_address)
 desenhar_linha(4204,4220,cor_mapa,bitmap_address)
 desenhar_coluna(4204,5996,cor_mapa,bitmap_address)
 desenhar_linha(5740,5756,cor_mapa,bitmap_address)
 desenhar_coluna(5752,8056,cor_mapa,bitmap_address)
-desenhar_lina(7684,7804,cor_mapa,bitmap_address)
-desenhar_coluna(5636,7840,cor_mapa,bitmap_address)
+desenhar_linha(7684,7804,cor_mapa,bitmap_address)
+desenhar_coluna(5636,7940,cor_mapa,bitmap_address)
 desenhar_linha(5636,5652,cor_mapa,bitmap_address)
 desenhar_coluna(4112,5904,cor_mapa,bitmap_address)
 desenhar_linha(4100,4116,cor_mapa,bitmap_address)
@@ -275,156 +275,40 @@ desenhar_obstaculo(2848,3,1,cor_mapa,bitmap_address)
 
 desenhar_obstaculo(3364,2,7,cor_mapa,bitmap_address)
 desenhar_obstaculo(5144,8,1,cor_mapa,bitmap_address)
-addi $a0,$zero,4652
-addi $a1,$zero,3
-addi $a2,$zero,2
-lw   $a3,cor_mapa
-lw   $v0,bitmap_address
-jal desenhar_obstaculo
+desenhar_obstaculo(4652,3,2,cor_mapa,bitmap_address)
 
 
-addi $a0,$zero,2868
-addi $a1,$zero,2
-addi $a2,$zero,1
-lw   $a3,cor_mapa
-lw   $v0,bitmap_address
-jal desenhar_obstaculo
-addi $a0,$zero,2864
-addi $a1,$zero,1
-addi $a2,$zero,6
-lw   $a3,cor_mapa
-lw   $v0,bitmap_address
-jal desenhar_obstaculo
-addi $a0,$zero,2884
-addi $a1,$zero,3
-addi $a2,$zero,1
-lw   $a3,cor_mapa
-lw   $v0,bitmap_address
-jal desenhar_obstaculo
-addi $a0,$zero,3148
-addi $a1,$zero,1
-addi $a2,$zero,5
-lw   $a3,cor_mapa
-lw   $v0,bitmap_address
-jal desenhar_obstaculo
-addi $a0,$zero,4144
-addi $a1,$zero,7
-addi $a2,$zero,1
-lw   $a3,cor_mapa
-lw   $v0,bitmap_address
-jal desenhar_obstaculo
 
-addi $a0,$zero,4680
-addi $a1,$zero,3
-addi $a2,$zero,3
-lw   $a3,cor_mapa
-lw   $v0,bitmap_address
-jal desenhar_obstaculo
-addi $a0,$zero,5200
-addi $a1,$zero,6
-addi $a2,$zero,1
-lw   $a3,cor_mapa
-lw   $v0,bitmap_address
-jal desenhar_obstaculo
-addi $a0,$zero,3412
-addi $a1,$zero,2
-addi $a2,$zero,7
-lw   $a3,cor_mapa
-lw   $v0,bitmap_address
-jal desenhar_obstaculo
+desenhar_obstaculo(2868,2,1,cor_mapa,bitmap_address)
+desenhar_obstaculo(2864,1,6,cor_mapa,bitmap_address)
+desenhar_obstaculo(2884,3,1,cor_mapa,bitmap_address)
+desenhar_obstaculo(3148,1,5,cor_mapa,bitmap_address)
+desenhar_obstaculo(4144,7,1,cor_mapa,bitmap_address)
 
-addi $a0,$zero,2900
-addi $a1,$zero,5
-addi $a2,$zero,1
-lw   $a3,cor_mapa
-lw   $v0,bitmap_address
-jal desenhar_obstaculo
-addi $a0,$zero,3168
-addi $a1,$zero,2
-addi $a2,$zero,7
-lw   $a3,cor_mapa
-lw   $v0,bitmap_address
-jal desenhar_obstaculo
-addi $a0,$zero,4668
-addi $a1,$zero,2
-addi $a2,$zero,4
-lw   $a3,cor_mapa
-lw   $v0,bitmap_address
-jal desenhar_obstaculo
-addi $a0,$zero,5676
-addi $a1,$zero,10
-addi $a2,$zero,1
-lw   $a3,cor_mapa
-lw   $v0,bitmap_address
-jal desenhar_obstaculo
+desenhar_obstaculo(4680,3,3,cor_mapa,bitmap_address)
+desenhar_obstaculo(5200,6,1,cor_mapa,bitmap_address)
+desenhar_obstaculo(3412,2,7,cor_mapa,bitmap_address)
 
-addi $a0,$zero,5656
-addi $a1,$zero,4
-addi $a2,$zero,1
-lw   $a3,cor_mapa
-lw   $v0,bitmap_address
-jal desenhar_obstaculo
+desenhar_obstaculo(2900,5,1,cor_mapa,bitmap_address)
+desenhar_obstaculo(3168,2,7,cor_mapa,bitmap_address)
+desenhar_obstaculo(4668,2,4,cor_mapa,bitmap_address)
+desenhar_obstaculo(5676,10,1,cor_mapa,bitmap_address)
 
-addi $a0,$zero,5720
-addi $a1,$zero,4
-addi $a2,$zero,1
-lw   $a3,cor_mapa
-lw   $v0,bitmap_address
-jal desenhar_obstaculo
+desenhar_obstaculo(5656,4,1,cor_mapa,bitmap_address)
 
-addi $a0,$zero,6156
-addi $a1,$zero,5
-addi $a2,$zero,5
-lw   $a3,cor_mapa
-lw   $v0,bitmap_address
-jal desenhar_obstaculo
+desenhar_obstaculo(5720,4,1,cor_mapa,bitmap_address)
 
+desenhar_obstaculo(6156,5,5,cor_mapa,bitmap_address)
 
-addi $a0,$zero,6180
-addi $a1,$zero,1
-addi $a2,$zero,5
-lw   $a3,cor_mapa
-lw   $v0,bitmap_address
-jal desenhar_obstaculo
-addi $a0,$zero,6184
-addi $a1,$zero,4
-addi $a2,$zero,3
-lw   $a3,cor_mapa
-lw   $v0,bitmap_address
-jal desenhar_obstaculo
+desenhar_obstaculo(6180,1,5,cor_mapa,bitmap_address)
+desenhar_obstaculo(6184,4,3,cor_mapa,bitmap_address)
 
-addi $a0,$zero,7212
-addi $a1,$zero,10
-addi $a2,$zero,1
-lw   $a3,cor_mapa
-lw   $v0,bitmap_address
-jal desenhar_obstaculo
-addi $a0,$zero,6204
-addi $a1,$zero,2
-addi $a2,$zero,4
-lw   $a3,cor_mapa
-lw   $v0,bitmap_address
-jal desenhar_obstaculo
+desenhar_obstaculo(7212,10,1,cor_mapa,bitmap_address)
+desenhar_obstaculo(6204,2,4,cor_mapa,bitmap_address)
 
-addi $a0,$zero,6216
-addi $a1,$zero,5
-addi $a2,$zero,3
-lw   $a3,cor_mapa
-lw   $v0,bitmap_address
-jal desenhar_obstaculo
-addi $a0,$zero,6232
-addi $a1,$zero,1
-addi $a2,$zero,5
-lw   $a3,cor_mapa
-lw   $v0,bitmap_address
-jal desenhar_obstaculo
-
-addi $a0,$zero,6240
-addi $a1,$zero,5
-addi $a2,$zero,5
-lw   $a3,cor_mapa
-lw   $v0,bitmap_address
-jal desenhar_obstaculo
+desenhar_obstaculo(6216,5,3,cor_mapa,bitmap_address)
+desenhar_obstaculo(6232,1,5,cor_mapa,bitmap_address)
+desenhar_obstaculo(6240,5,5,cor_mapa,bitmap_address)
 
 lw $ra, 0($sp)
 addi $sp,$sp,4
@@ -459,13 +343,13 @@ desenharL:
 	sw   $a2,8($sp)
 	sw   $a3,12($sp)
 	sw   $ra,16($sp)
-	jal desenhar_coluna
+	#jal 	desenhar_coluna($a0,$a1,$a2,$a3)
 	lw $a0, 4($sp) #passa o valor do fim da coluna
 	addi $a1, $zero, 4
 	addi $a2, $zero, 2
 	lw $a3, 8($sp)
 	lw   $v0,bitmap_address	
-	jal desenhar_obstaculo
+	#jal 	desenhar_obstaculo($a0,$a1,$a2,corPac,$v0)
 	lw $ra,16($sp)
 	addi $sp,$sp,20
 	jr $ra
@@ -473,7 +357,7 @@ desenharL:
 .globl main
 main:
 
-jal desenhar_mapa_1
+jal desenhar_mapa_2
 #jal desenhar_lado
 
 	
