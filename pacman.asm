@@ -2,8 +2,9 @@
 #Escolher tamanho de pixel 8x8 configuracao tamanho de display 512x256
 # valor ask cacacteres A = 41, S = 53, D = 44, F = 46
 cor:            .word 0x00000fff
+corPac:		.word 0x00f4f442	
 cor_mapa:       .word 0x000000e6
-bitmap_address: .word 0x00002000
+bitmap_address: .word 0x10010000
 key_board_addr: .word 0x00007f04
 bitmap_size:    .word 16384 #  512 x 256 = 131072 / 8 Tamano de Pixel = 16284 pixls
 .text
@@ -11,7 +12,7 @@ bitmap_size:    .word 16384 #  512 x 256 = 131072 / 8 Tamano de Pixel = 16284 pi
 main:
 
 jal desenhar_mapa_1
-
+jal desenhar_lado
 
 	
 addi $v0, $zero,10
@@ -930,3 +931,47 @@ jal desenhar_obstaculo
 lw $ra, 0($sp)
 addi $sp,$sp,4
 jr $ra
+
+desenhar_lado:
+
+	addi $a0,$zero,396
+	addi $a1,$zero,2956
+	lw   $a2, corPac	
+	lw   $a3, bitmap_address
+        jal desenharL
+        lw   $v0,bitmap_address
+        lw   $a3,cor_mapa
+        #jal desenharV
+        
+	
+#	addi $a0,$zero,2412
+#	addi $a1,$zero,3948
+#	lw   $a2, corPac	
+#	lw   $a3, bitmap_address
+ #       jal desenharV
+
+# $a0 é endereço inicial da coluna
+# $a1 é o endereço final da coluna
+# $a3 é endereço base
+# $a2 cor
+desenharL:
+	addi $sp,$sp,-20
+	sw   $a0,0($sp)
+	sw   $a1,4($sp)
+	sw   $a2,8($sp)
+	sw   $a3,12($sp)
+	sw   $ra,16($sp)
+	jal desenhar_coluna
+	lw $a0, 4($sp) #passa o valor do fim da coluna
+	addi $a1, $zero, 4
+	addi $a2, $zero, 2
+	lw $a3, 8($sp)
+	lw   $v0,bitmap_address	
+	jal desenhar_obstaculo
+	lw $ra,16($sp)
+	addi $sp,$sp,20
+	jr $ra
+
+		
+		
+			
