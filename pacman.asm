@@ -1,8 +1,18 @@
+#########################################################
+#                  Como rodar? 				#
+#########################################################
+# Tamanho de pixel : 8x8				#
+# Dimensão do display: 512 x 256			#
+# valor ask cacacteres A = 41, S = 53, D = 44, F = 46   #
+#########################################################
+#   O módulo principal é o pacman, rodar ele primeiro   #
+#########################################################
+#   em "settings -> memory configuration" setar valor   #
+#   default.						#
+#########################################################			
 .include "mapa.asm"
 .include "numeros.asm"
 .data
-#Escolher tamanho de pixel 8x8 configuracao tamanho de display 512x256
-# valor ask cacacteres A = 41, S = 53, D = 44, F = 46
 cor:            .word 0x00000fff
 corPac:		.word 0x00f4f442
 corComida:      .word 0x00ffffff	
