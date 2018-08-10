@@ -729,7 +729,29 @@ calcular_desenhar($s0)
 	desenhar_comida(3164,4956,0)
 	desenhar_comida(4960,5216,0)
 	desenhar_comida(1128,5992,0)
+	desenhar_comida(2648,2904,0)
+	desenhar_comida(2596,2852,0)
 	
+	#Parte superior
+	desenhar_comida(2080,2108,1)
+	desenhar_comida(2116,2144,1)
+	desenhar_comida(544,1824,0)
+	desenhar_comida(812,1580,0)
+	desenhar_comida(848,1616,0)
+	desenhar_comida(1072,1100,1)
+	desenhar_comida(560,588,1)
+	desenhar_comida(604,2396,0)
+	desenhar_comida(1136,1140,0)
+	desenhar_comida(884,1140,0)
+	#desenhando pontas
+	desenhar_comida(612,624,1)
+	desenhar_comida(528,540,1)
+	desenhar_comida(776,1032,0)
+	
+	desenhar_comida(1036,1040,1)
+	desenhar_comida(1592,1848,0)
+	desenhar_comida(1604,1860,0)
+		
 	
 	#Sequencia de comandos para desenhar acomida
 	#Parte inferior do mapa
