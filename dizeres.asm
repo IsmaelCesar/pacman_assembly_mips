@@ -111,17 +111,23 @@ desenhar_v_function:
 	addi $sp,$sp,4
 	jr $ra
 
-.globl desenhar_lado
-desenhar_lado:
-	addi $sp,$sp,-4
+#Procedimento para desenhar o numero do level
+# $a0 -> Argumento com o número indicando o Nível
+.macro desenhar_lado(%level)
+	add $a0,$zero,%level
+	jal desenhar_lado_function
+.end_macro
+desenhar_lado_function:
+	addi $sp,$sp,-8
 	sw   $ra,0($sp)
-        desenharL(396,2956,corPac,bitmap_address)   
-        
-        desenharV(672)
-        
-        
+	sw   $a0,4($sp)
+        desenharL(396,2956,corPac,bitmap_address)           
+        desenharV(672)        
+        desenharL(448,3008,corPac,bitmap_address)
+        lw   $t0,4($sp)
+        desenhar_numero($t0,732,corPac,bitmap_address)       	        
         
         lw   $ra,0($sp)
-        addi $sp,$sp,4
+        addi $sp,$sp,8
         jr $ra
         

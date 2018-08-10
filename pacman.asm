@@ -50,7 +50,7 @@ main:
 jal desenhar_mapa_1
 addi $s0, $zero,789
 calcular_desenhar($s0) 
-jal desenhar_lado	
+desenhar_lado(2)
 	
 	#Sequencia de comandos para desenhar acomida
 	#Parte inferior do mapa
