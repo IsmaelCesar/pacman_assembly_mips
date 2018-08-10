@@ -239,6 +239,55 @@ sw   $ra,0($sp)
 	#      Desenhado comida   #
 	###########################
 	desenhar_comida(7432,7540,1)
+	#Sequencia de comandos para desenhar acomida
+	#Parte inferior do mapa
+	desenhar_comida(6920,7176,0)
+	desenhar_comida(6668,6672,1)
+	desenhar_comida(6928,6940,1)
+	desenhar_comida(6944,6972,1)
+	desenhar_comida(6980,7008,1)
+	desenhar_comida(6980,7008,1)
+	desenhar_comida(7012,7024,1)
+	desenhar_comida(7028,7032,1)
+	desenhar_comida(6768,6772,1)
+	desenhar_comida(5384,6152,0)
+	desenhar_comida(6156,6160,1)
+	desenhar_comida(5392,5396,1)
+	desenhar_comida(2840,6936,0)
+	desenhar_comida(5660,5688,1)
+	desenhar_comida(6432,6504,1)
+	desenhar_comida(2916,7268,0)
+	desenhar_comida(3872,5664,0)
+	desenhar_comida(5156,5208,1)
+	desenhar_comida(3676,5980,0)
+	desenhar_comida(6212,6468,0)
+	desenhar_comida(5700,5728,1)
+	desenhar_comida(5944,5948,1)
+	desenhar_comida(6416,6420,1)
+	desenhar_comida(6508,6512,1)
+	desenhar_comida(6256,6260,1)
+	desenhar_comida(5484,5496,1)
+	desenhar_comida(6004,6008,1)
+
+	#parte superior do mapa
+	desenhar_comida(520,568,1)
+	desenhar_comida(580,632,1)
+	desenhar_comida(1032,2312,0)
+	desenhar_comida(1140,2420,0)
+	desenhar_comida(1052,1820,0)
+	desenhar_comida(824,1592,0)
+	desenhar_comida(1092,1860,0)
+	desenhar_comida(864,1632,0)
+	desenhar_comida(1808,1908,1)
+	desenhar_comida(2572,2592,1)
+	desenhar_comida(2656,2676,1)
+	desenhar_comida(2848,2876,1)
+	desenhar_comida(2884,2912,1)
+	
+	#Desenhando pontas
+	desenhar_comida(3852,3856,1)
+	desenhar_comida(3952,3956,1)
+	
 	
 lw $ra, 0($sp)
 addi $sp,$sp,4
@@ -650,60 +699,6 @@ main:
 jal desenhar_mapa_1
 addi $s0, $zero,0
 calcular_desenhar($s0) 
-
-#Sequencia de comandos para desenhar acomida
-#Parte inferior do mapa
-desenhar_comida(6920,7176,0)
-desenhar_comida(6668,6672,1)
-desenhar_comida(6928,6940,1)
-desenhar_comida(6944,6972,1)
-desenhar_comida(6980,7008,1)
-desenhar_comida(6980,7008,1)
-desenhar_comida(7012,7024,1)
-desenhar_comida(7028,7032,1)
-desenhar_comida(6768,6772,1)
-desenhar_comida(5384,6152,0)
-desenhar_comida(6156,6160,1)
-desenhar_comida(5392,5396,1)
-desenhar_comida(2840,6936,0)
-desenhar_comida(5660,5688,1)
-desenhar_comida(6432,6504,1)
-desenhar_comida(2916,7268,0)
-desenhar_comida(3872,5664,0)
-desenhar_comida(5156,5208,1)
-desenhar_comida(3676,5980,0)
-desenhar_comida(6212,6468,0)
-desenhar_comida(5700,5728,1)
-desenhar_comida(5944,5948,1)
-desenhar_comida(6416,6420,1)
-desenhar_comida(6508,6512,1)
-desenhar_comida(6256,6260,1)
-desenhar_comida(5484,5496,1)
-desenhar_comida(6004,6008,1)
-
-#parte superior do mapa
-desenhar_comida(520,568,1)
-desenhar_comida(580,632,1)
-desenhar_comida(1032,2312,0)
-desenhar_comida(1140,2420,0)
-desenhar_comida(1052,1820,0)
-desenhar_comida(824,1592,0)
-desenhar_comida(1092,1860,0)
-desenhar_comida(864,1632,0)
-desenhar_comida(1808,1908,1)
-desenhar_comida(2572,2592,1)
-desenhar_comida(2656,2676,1)
-desenhar_comida(2848,2876,1)
-desenhar_comida(2884,2912,1)
-
-#Desenhando pontas
-desenhar_comida(3852,3856,1)
-desenhar_comida(3952,3956,1)
-
-
-
-
-
 	
 addi $v0, $zero,10
 syscall
