@@ -52,8 +52,6 @@ addi $s0, $zero,789
 calcular_desenhar($s0) 
 desenhar_lado(2)
 	
-	#Sequencia de comandos para desenhar acomida
-	#Parte inferior do mapa
 				
 addi $v0, $zero,10
 syscall
