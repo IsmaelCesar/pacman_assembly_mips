@@ -152,7 +152,7 @@ desenhar_coracao_funtion:
 	lw   $t1,4($sp)
 	
 	add $t1,$zero,$t0 #reinicializando $t1
-	addi $t1,$t1,8
+	addi $t1,$t1,1032
 	sw   $t0,0($sp)
 	sw   $t1,4($sp)
 	desenhar_obstaculo($t1,1,1,corVernelha,bitmap_address)
@@ -168,7 +168,7 @@ desenhar_coracao_funtion:
 #        Relativo as três vidas a serem desenhadas 
 .macro desenhar_vidas(%endIni)
 	add $a0,$zero,%endIni
-	jal desenhar_vida_function
+	jal desenhar_vidas_function
 .end_macro
 desenhar_vidas_function:
 	addi $sp,$sp,-8
@@ -188,7 +188,7 @@ desenhar_vidas_function:
 	
 	sw   $ra,0($sp)
 	addi $sp,$sp,8
-	jal $ra	
+	jr $ra	
 
 ######################################################################################################
 
