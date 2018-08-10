@@ -1,58 +1,15 @@
-.data
-#Escolher tamanho de pixel 8x8 configuracao tamanho de display 512x256
-# valor ask cacacteres A = 41, S = 53, D = 44, F = 46
-cor:            .word 0x00000fff
-corPac:		.word 0x00f4f442	
-cor_mapa:       .word 0x000000e6
-bitmap_address: .word 0x10010000
-key_board_addr: .word 0x00007f04
-bitmap_size:    .word 16384 #  512 x 256 = 131072 / 8 Tamano de Pixel = 16284 pixls
-.text
-
-#Procedimento para escrever linha por linha
-# $a0 -> Argumento com o endereço inicial
-# $a1 -> Argumento contendo endereço final
-# $a2 -> Argumento contendo a cor do mapa a ser desenhado
-# $a3 -> Argumento contendo o endereço base a ser utilizado
-.macro desenhar_linha(%endIni, %endFin, %corMapa, %endBase)
-	add $a0, $zero, %endIni
-	add $a1, $zero, %endFin
-	lw $a2, %corMapa
-	lw $a3, %endBase
-	jal desenhar_linha_function
-.end_macro
-
-desenhar_linha_function:
-	add $a0, $a3, $a0 #Inclui o valor no endereço base
-	add $a1, $a3, $a1 #Inclui o valor no endereço base
-	loop_desenhar_linha:	
-	sw  $a2,0($a0)
-	addi $a0,$a0,4
-	bne $a0, $a1, loop_desenhar_linha
-	jr $ra
-
-#Procedimento para escrever coluna por coluna
-# $a0 -> Argumento com o endereço inicial
-# $a1 -> Argumento contendo endereço final
-# $a2 -> Argumento contendo a cor do mapa a ser desenhado
-# $a3 -> Argumento contendo o endereço base a ser utilizado
-.macro desenhar_coluna(%endIni, %endFin, %corMapa, %endBase)
-	add $a0,$zero, %endIni
-	add $a1,$zero, %endFin
-	lw $a2, %corMapa
-	lw $a3, %endBase
-	jal desenhar_coluna_fuction
-.end_macro
-desenhar_coluna_fuction:
-	
-	add $a0, $a3, $a0 #Inclui o valor no endereço base
-	add $a1, $a3, $a1 #Inclui o valor no endereço base
-	loop_desenhar_coluna:	
-	sw  $a2,0($a0)
-	addi $a0,$a0,256
-	bne $a0, $a1, loop_desenhar_coluna
-	jr $ra
-
+#########################################################
+#                  Como rodar? 				#
+#########################################################
+# Tamanho de pixel : 8x8				#
+# Dimensão do display: 512 x 256			#
+# valor ask cacacteres A = 41, S = 53, D = 44, F = 46   #
+#########################################################
+#   O módulo principal é o pacman, rodar ele primeiro   #
+#########################################################
+#   em "settings -> memory configuration" setar valor   #
+#   default.						#
+#########################################################		
 .macro desenhar_numero(%num, %endInicial, %corMapa, %endBase)
 	add $a0,$zero, %num
 	add $a1,$zero, %endInicial
@@ -62,6 +19,9 @@ desenhar_coluna_fuction:
 .end_macro
 #SWCase
 desenhar_numero_function:
+	addi $sp,$sp,-4
+	sw   $ra,0($sp)
+	###############
 	beq $a0, 0, desenhaZero
 	beq $a0, 1, desenhaUm
 	beq $a0, 2, desenhaDois
@@ -87,6 +47,11 @@ desenhaZero:
 	desenhar_coluna($t5,$t0,corPac, bitmap_address) #linha 3
 	addi $t0, $t6, 12 
 	desenhar_linha($t6,$t0, corPac,bitmap_address) #linha 1	
+	##Retornando a o endereço anterior
+	lw   $ra,0($sp)
+	addi $sp,$sp,4
+	jr  $ra
+	##############
 desenhaUm:
 	add $t0, $0,$a1 #inicio
 	jal acha_inicio
@@ -94,6 +59,11 @@ desenhaUm:
 	desenhar_coluna($t3,$t0,corPac, bitmap_address) #linha 3
 	addi $t0, $t5, 768
 	desenhar_coluna($t5,$t0,corPac, bitmap_address) #linha 3
+	##Retornando a o endereço anterior
+	lw   $ra,0($sp)
+	addi $sp,$sp,4
+	jr  $ra
+	##############
 desenhaDois:
 	add $t0, $0,$a1 #inicio
 	jal acha_inicio
@@ -107,6 +77,11 @@ desenhaDois:
 	desenhar_linha($t6,$t0, corPac,bitmap_address) #linha 1
 	addi $t0, $t7, 12 
 	desenhar_linha($t7,$t0, corPac,bitmap_address) #linha 1	
+	##Retornando a o endereço anterior
+	lw   $ra,0($sp)
+	addi $sp,$sp,4
+	jr  $ra
+	##############
 desenhaTres:
 	add $t0, $0,$a1 #inicio
 	jal acha_inicio
@@ -120,6 +95,11 @@ desenhaTres:
 	desenhar_linha($t6,$t0, corPac,bitmap_address) #linha 1	
 	addi $t0, $t7, 12 
 	desenhar_linha($t7,$t0, corPac,bitmap_address) #linha 1	
+	##Retornando a o endereço anterior
+	lw   $ra,0($sp)
+	addi $sp,$sp,4
+	jr  $ra
+	##############
 desenhaQuatro:
 	add $t0, $0,$a1 #inicio
 	jal acha_inicio
@@ -131,6 +111,11 @@ desenhaQuatro:
 	desenhar_coluna($t5,$t0,corPac, bitmap_address) #linha 3
 	addi $t0, $t7, 12 
 	desenhar_linha($t7,$t0, corPac,bitmap_address) #linha 1	
+	##Retornando a o endereço anterior
+	lw   $ra,0($sp)
+	addi $sp,$sp,4
+	jr  $ra
+	##############
 desenhaCinco:
 	add $t0, $0,$a1 #inicio
 	jal acha_inicio
@@ -144,6 +129,11 @@ desenhaCinco:
 	desenhar_linha($t6,$t0, corPac,bitmap_address) #linha 1	
 	addi $t0, $t7, 12 
 	desenhar_linha($t7,$t0, corPac,bitmap_address) #linha 1	
+	##Retornando a o endereço anterior
+	lw   $ra,0($sp)
+	addi $sp,$sp,4
+	jr  $ra
+	##############
 desenhaSeis:
 	add $t0, $0,$a1 #inicio
 	jal acha_inicio
@@ -159,6 +149,11 @@ desenhaSeis:
 	desenhar_linha($t6,$t0, corPac,bitmap_address) #linha 1	
 	addi $t0, $t7, 12 
 	desenhar_linha($t7,$t0, corPac,bitmap_address) #linha 1	
+	##Retornando a o endereço anterior
+	lw   $ra,0($sp)
+	addi $sp,$sp,4
+	jr  $ra
+	##############
 desenhaSete:
 	add $t0, $0,$a1 #inicio
 	jal acha_inicio
@@ -168,7 +163,11 @@ desenhaSete:
 	desenhar_coluna($t3,$t0,corPac, bitmap_address) #linha 3
 	addi $t0, $t5, 768
 	desenhar_coluna($t5,$t0,corPac, bitmap_address) #linha 3
-	
+	##Retornando a o endereço anterior
+	lw   $ra,0($sp)
+	addi $sp,$sp,4
+	jr  $ra
+	##############
 desenhaOito:
 	add $t0, $0,$a1 #inicio
 	jal acha_inicio
@@ -186,6 +185,11 @@ desenhaOito:
 	desenhar_linha($t6,$t0, corPac,bitmap_address) #linha 1	
 	addi $t0, $t7, 12 
 	desenhar_linha($t7,$t0, corPac,bitmap_address) #linha 1	
+	##Retornando a o endereço anterior
+	lw   $ra,0($sp)
+	addi $sp,$sp,4
+	jr  $ra
+	##############
 desenhaNove:
 	add $t0, $0,$a1 #inicio
 	jal acha_inicio
@@ -201,7 +205,11 @@ desenhaNove:
 	desenhar_linha($t6,$t0, corPac,bitmap_address) #linha 1	
 	addi $t0, $t7, 12 
 	desenhar_linha($t7,$t0, corPac,bitmap_address) #linha 1	
-
+	##Retornando a o endereço anterior
+	lw   $ra,0($sp)
+	addi $sp,$sp,4
+	jr  $ra
+	##############
 acha_inicio:
 	addi $t1, $t0, 4
 	addi $t2, $t0, 256
@@ -212,11 +220,55 @@ acha_inicio:
 	addi $t7, $t0, 1028
 	jr $ra
 	
-.globl main
-main:
-		addi $s0, $zero, 9
-		desenhar_numero($s0, 4004, corPac, bitmap_address)
-		 
-		
-		
-		 
+	
+#Procedimento para retornar o idice mógulo 10
+# $a0 -> Argumento com o valor 
+# $a1 -> Argumento com o valor exp
+.macro funcao_modulo_expoente(%valor,%expoente)
+	addi $a0,%valor,0
+	addi $a1,%expoente,0
+	jal  pegar_indice_modulo
+.end_macro
+pegar_indice_modulo:
+	#addi $t0,$zero,789
+	#addi $t1,$zero,10
+	div  $a0,$a1    #valor/exp
+	mflo $a0
+	addi $a1,$zero,10
+	div  $a0,$a1
+	mfhi $a0        #valor/exp módulo 10
+	addi $v0,$a0,0  #adicionando valor de retorno a o registrador
+	jr $ra
+
+#Macro para o procedimendo calcular desenhar
+.macro calcular_desenhar(%numero)
+	add $a0, $zero,%numero
+	jal calcular_desenhar_function
+.end_macro
+#Procedimento para extrair os dígitos de um número e desenha-los no bitmap display
+#$a0 -> Número a ser pintado
+calcular_desenhar_function:
+	addi $sp, $sp, -8
+	sw   $ra, 0($sp)
+	sw   $a0,4($sp)  #Salva o número na pilha
+	addi $a1,$zero,1
+	#Primero dígito desenhar_numero(%num, %endInicial, %corMapa, %endBase)
+	funcao_modulo_expoente($a0,$a1)
+	desenhar_numero($v0,4056,corPac,bitmap_address)
+
+	#Segundo dígito
+	lw   $a0,4($sp)
+	addi $a1,$zero,10
+	funcao_modulo_expoente($a0,$a1)
+	desenhar_numero($v0,4028,corPac,bitmap_address)
+
+	
+	#Terceiro dígito
+	lw   $a0,4($sp)
+	addi $a1,$zero,100
+	funcao_modulo_expoente($a0,$a1)	
+	desenhar_numero($v0,3996,corPac,bitmap_address)
+	
+	lw $ra,0($sp)
+	addi $sp, $sp,8
+	jr $ra
