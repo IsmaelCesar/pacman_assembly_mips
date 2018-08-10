@@ -21,9 +21,6 @@ bitmap_address: .word 0x10010000
 key_board_addr: .word 0x00007f04
 bitmap_size:    .word 16384 #  512 x 256 = 131072 / 8 Tamano de Pixel = 16284 pixls
 .text	
-
-
-
 #Procedimento utilizado para efetuar a movimentação de um personagem genérico
 #$a0 -> Argumento com o endereço da posicao do personagem
 #$a1 -> Argumento com o endereço da próxima casa em que o personagem vai

@@ -1,3 +1,15 @@
+#########################################################
+#                  Como rodar? 				#
+#########################################################
+# Tamanho de pixel : 8x8				#
+# Dimensão do display: 512 x 256			#
+# valor ask cacacteres A = 41, S = 53, D = 44, F = 46   #
+#########################################################
+#   O módulo principal é o pacman, rodar ele primeiro   #
+#########################################################
+#   em "settings -> memory configuration" setar valor   #
+#   default.						#
+#########################################################		
 .macro desenhar_numero(%num, %endInicial, %corMapa, %endBase)
 	add $a0,$zero, %num
 	add $a1,$zero, %endInicial
