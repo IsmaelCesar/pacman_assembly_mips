@@ -123,6 +123,42 @@ desenhar_obstaculo_function:
 	addi $v0,$zero,0
 	jr $ra	
 	
+#Procedimento para desenhar sequencias de alimentos para o pacman na linha(Da direita para esquerda)
+#Com o endereço inicial e final inclusos 
+#$a0 -> Argumento com o endereço inicial
+#$a1 -> Argumento com o endereço final
+#$a2 -> Valor indicando se deseja desenhar linha ou coluna $a2 = 1 então desenha linha
+#	$a2 = 0 então desenha coluna
+.macro desenhar_comida(%endIni, %endFin,%opc)
+	add $a0,$zero,%endIni
+	add $a1,$zero,%endFin
+	add $a2,$zero,%opc
+	jal desenhar_comida_function
+.end_macro
+desenhar_comida_function:
+	lw $t0, bitmap_address
+	lw $t1, bitmap_address
+	
+	bne $a2,1,else 
+		addi $t5,$zero,8
+		j end_if_opc_linha_coluna
+	else:
+		addi $t5,$zero,512
+	end_if_opc_linha_coluna:
+	add $t0,$t0,$a0   #Salvando o endereço inicial em $t0
+	add $t1,$t1,$a1   #Salvando o endereço inicial em $t1
+	addi $t2,$t0,0    #inicializando $t2 para ser utilizado como incremento
+	lw $t3, corComida #Carregando cor comida
+	#sw $t3,0($t1)		
+	loop_desenhar_comida:
+		slt $t4,$t2,$t1 
+		beq $t4,0,exit_loop_desenhar_comida #Dá o branch
+			sw $t3,0($t2)	
+			add $t2,$t2,$t5
+			j loop_desenhar_comida
+	exit_loop_desenhar_comida:
+	jr $ra 	
+	
 #Procedimeto é utilizado para desenhar o mapa do estágio 1 linha por linha e coluna por coluna
 desenhar_mapa_1:
 addi $sp,$sp,-4
@@ -199,7 +235,11 @@ sw   $ra,0($sp)
 	desenhar_linha(7240,7284,cor_mapa, bitmap_address)	
 	desenhar_coluna(6752,7264,cor_mapa, bitmap_address)
 	desenhar_coluna(4192,5728,cor_mapa, bitmap_address)
-
+	###########################
+	#      Desenhado comida   #
+	###########################
+	desenhar_comida(7432,7540,1)
+	
 lw $ra, 0($sp)
 addi $sp,$sp,4
 jr $ra
@@ -604,50 +644,16 @@ calcular_desenhar_function:
 	addi $sp, $sp,8
 	jr $ra
 
-#Procedimento para desenhar sequencias de alimentos para o pacman na linha(Da direita para esquerda)
-#Com o endereço inicial e final inclusos 
-#$a0 -> Argumento com o endereço inicial
-#$a1 -> Argumento com o endereço final
-#$a2 -> Valor indicando se deseja desenhar linha ou coluna $a2 = 1 então desenha linha
-#	$a2 = 0 então desenha coluna
-.macro desenhar_comida(%endIni, %endFin,%opc)
-	add $a0,$zero,%endIni
-	add $a1,$zero,%endFin
-	add $a2,$zero,%opc
-	jal desenhar_linha_comida_function
-.end_macro
-desenhar_linha_comida_function:
-	lw $t0, bitmap_address
-	lw $t1, bitmap_address
-	
-	bne $a2,1,else 
-		addi $t5,$zero,8
-		j end_if_opc_linha_coluna
-	else:
-		addi $t5,$zero,512
-	end_if_opc_linha_coluna:
-	add $t0,$t0,$a0   #Salvando o endereço inicial em $t0
-	add $t1,$t1,$a1   #Salvando o endereço inicial em $t1
-	addi $t2,$t0,0    #inicializando $t2 para ser utilizado como incremento
-	lw $t3, corComida #Carregando cor comida
-	#sw $t3,0($t1)		
-	loop_desenhar_comida:
-		slt $t4,$t2,$t1 
-		beq $t4,0,exit_loop_desenhar_comida #Dá o branch
-			sw $t3,0($t2)	
-			add $t2,$t2,$t5
-			j loop_desenhar_comida
-	exit_loop_desenhar_comida:
-	jr $ra 
-
 .globl main
 main:
 
 jal desenhar_mapa_1
 addi $s0, $zero,0
 calcular_desenhar($s0) 
-desenhar_comida(7432,7540,1)
-#jal desenhar_lado
+
+#Sequencia de comandos para desenhar acomida
+desenhar_comida(6920,7176,0)
+desenhar_comida(6668,6672,1)
 
 	
 addi $v0, $zero,10
