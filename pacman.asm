@@ -207,104 +207,98 @@ desenhar_mapa_2:
 addi $sp,$sp,-4
 sw   $ra,0($sp)
 
-## Desenhando limhas mais exteranas
-desenhar_linha(260,380,cor_mapa,bitmap_address)
-desenhar_coluna(376,1656,cor_mapa,bitmap_address)
-desenhar_linha(1388,1404,cor_mapa,bitmap_address)
-desenhar_coluna(1388,2156,cor_mapa,bitmap_address)
-desenhar_linha(1900,1916,cor_mapa,bitmap_address)
-desenhar_linha(2412,2428,cor_mapa,bitmap_address)
-desenhar_coluna(2412,3948,cor_mapa,bitmap_address)
-desenhar_linha(3692,3708,cor_mapa,bitmap_address)
-desenhar_linha(4204,4220,cor_mapa,bitmap_address)
-desenhar_coluna(4204,5996,cor_mapa,bitmap_address)
-desenhar_linha(5740,5756,cor_mapa,bitmap_address)
-desenhar_coluna(5752,8056,cor_mapa,bitmap_address)
-desenhar_linha(7684,7804,cor_mapa,bitmap_address)
-desenhar_coluna(5636,7940,cor_mapa,bitmap_address)
-desenhar_linha(5636,5652,cor_mapa,bitmap_address)
-desenhar_coluna(4112,5904,cor_mapa,bitmap_address)
-desenhar_linha(4100,4116,cor_mapa,bitmap_address)
-desenhar_linha(3588,3604,cor_mapa,bitmap_address)
-desenhar_coluna(2320,3856,cor_mapa,bitmap_address)
-desenhar_linha(2308,2324,cor_mapa,bitmap_address)
-desenhar_linha(1796,1812,cor_mapa,bitmap_address)
-desenhar_coluna(1296,2064,cor_mapa,bitmap_address)
-desenhar_linha(1284,1300,cor_mapa,bitmap_address)
-desenhar_coluna(260,1540,cor_mapa,bitmap_address)
+	## Desenhando limhas mais exteranas
+	desenhar_linha(260,380,cor_mapa,bitmap_address)
+	desenhar_coluna(376,1656,cor_mapa,bitmap_address)
+	desenhar_linha(1388,1404,cor_mapa,bitmap_address)
+	desenhar_coluna(1388,2156,cor_mapa,bitmap_address)
+	desenhar_linha(1900,1916,cor_mapa,bitmap_address)
+	desenhar_linha(2412,2428,cor_mapa,bitmap_address)
+	desenhar_coluna(2412,3948,cor_mapa,bitmap_address)
+	desenhar_linha(3692,3708,cor_mapa,bitmap_address)
+	desenhar_linha(4204,4220,cor_mapa,bitmap_address)
+	desenhar_coluna(4204,5996,cor_mapa,bitmap_address)
+	desenhar_linha(5740,5756,cor_mapa,bitmap_address)
+	desenhar_coluna(5752,8056,cor_mapa,bitmap_address)
+	desenhar_linha(7684,7804,cor_mapa,bitmap_address)
+	desenhar_coluna(5636,7940,cor_mapa,bitmap_address)
+	desenhar_linha(5636,5652,cor_mapa,bitmap_address)
+	desenhar_coluna(4112,5904,cor_mapa,bitmap_address)
+	desenhar_linha(4100,4116,cor_mapa,bitmap_address)
+	desenhar_linha(3588,3604,cor_mapa,bitmap_address)
+	desenhar_coluna(2320,3856,cor_mapa,bitmap_address)
+	desenhar_linha(2308,2324,cor_mapa,bitmap_address)
+	desenhar_linha(1796,1812,cor_mapa,bitmap_address)
+	desenhar_coluna(1296,2064,cor_mapa,bitmap_address)
+	desenhar_linha(1284,1300,cor_mapa,bitmap_address)
+	desenhar_coluna(260,1540,cor_mapa,bitmap_address)
 
-##### Desenhando obstáculos
+	##### Desenhando obstáculos
 
-desenhar_obstaculo(780,5,1,cor_mapa,bitmap_address)
-desenhar_obstaculo(548,2,3,cor_mapa,bitmap_address)
-desenhar_obstaculo(816,8,1,cor_mapa,bitmap_address)
-desenhar_obstaculo(596,2,3,cor_mapa,bitmap_address)
-desenhar_obstaculo(596,2,3,cor_mapa,bitmap_address)
-desenhar_obstaculo(864,5,1,cor_mapa,bitmap_address)
-######################
-desenhar_obstaculo(1304,2,5,cor_mapa,bitmap_address)
-desenhar_obstaculo(2336,3,1,cor_mapa,bitmap_address)
+	desenhar_obstaculo(780,5,1,cor_mapa,bitmap_address)
+	desenhar_obstaculo(548,2,3,cor_mapa,bitmap_address)
+	desenhar_obstaculo(816,8,1,cor_mapa,bitmap_address)
+	desenhar_obstaculo(596,2,3,cor_mapa,bitmap_address)
+	desenhar_obstaculo(596,2,3,cor_mapa,bitmap_address)
+	desenhar_obstaculo(864,5,1,cor_mapa,bitmap_address)
+	######################
+	desenhar_obstaculo(1304,2,5,cor_mapa,bitmap_address)
+	desenhar_obstaculo(2336,3,1,cor_mapa,bitmap_address)
+	
+	desenhar_obstaculo(1572,5,2,cor_mapa,bitmap_address)
+	desenhar_obstaculo(1328,2,1,cor_mapa,bitmap_address)
 
+	desenhar_obstaculo(1340,2,4,cor_mapa,bitmap_address)
+	desenhar_obstaculo(2352,8,1,cor_mapa,bitmap_address)
 
-desenhar_obstaculo(1572,5,2,cor_mapa,bitmap_address)
-desenhar_obstaculo(1328,2,1,cor_mapa,bitmap_address)
+	desenhar_obstaculo(1352,2,3,cor_mapa,bitmap_address)
+	desenhar_obstaculo(1616,3,2,cor_mapa,bitmap_address)
 
+	desenhar_obstaculo(2388,5,1,cor_mapa,bitmap_address)
+	desenhar_obstaculo(1376,2,4,cor_mapa,bitmap_address)
+	######################
 
-desenhar_obstaculo(1340,2,4,cor_mapa,bitmap_address)
-desenhar_obstaculo(2352,8,1,cor_mapa,bitmap_address)
+	desenhar_obstaculo(2840,2,8,cor_mapa,bitmap_address)
+	desenhar_obstaculo(2848,3,1,cor_mapa,bitmap_address)
 
+	desenhar_obstaculo(3364,2,7,cor_mapa,bitmap_address)
+	desenhar_obstaculo(5144,8,1,cor_mapa,bitmap_address)
+	desenhar_obstaculo(4652,3,2,cor_mapa,bitmap_address)
 
-desenhar_obstaculo(1352,2,3,cor_mapa,bitmap_address)
-desenhar_obstaculo(1616,3,2,cor_mapa,bitmap_address)
+	desenhar_obstaculo(2868,2,1,cor_mapa,bitmap_address)
+	desenhar_obstaculo(2864,1,6,cor_mapa,bitmap_address)
+	desenhar_obstaculo(2884,3,1,cor_mapa,bitmap_address)
+	desenhar_obstaculo(3148,1,5,cor_mapa,bitmap_address)
+	desenhar_obstaculo(4144,7,1,cor_mapa,bitmap_address)
 
+	desenhar_obstaculo(4680,3,3,cor_mapa,bitmap_address)
+	desenhar_obstaculo(5200,6,1,cor_mapa,bitmap_address)
+	desenhar_obstaculo(3412,2,7,cor_mapa,bitmap_address)
+	
+	desenhar_obstaculo(2900,5,1,cor_mapa,bitmap_address)
+	desenhar_obstaculo(3168,2,7,cor_mapa,bitmap_address)
+	desenhar_obstaculo(4668,2,4,cor_mapa,bitmap_address)
+	desenhar_obstaculo(5676,10,1,cor_mapa,bitmap_address)
 
-desenhar_obstaculo(2388,5,1,cor_mapa,bitmap_address)
-desenhar_obstaculo(1376,2,4,cor_mapa,bitmap_address)
-######################
+	desenhar_obstaculo(5656,4,1,cor_mapa,bitmap_address)
 
-desenhar_obstaculo(2840,2,8,cor_mapa,bitmap_address)
-desenhar_obstaculo(2848,3,1,cor_mapa,bitmap_address)
+	desenhar_obstaculo(5720,4,1,cor_mapa,bitmap_address)
 
-desenhar_obstaculo(3364,2,7,cor_mapa,bitmap_address)
-desenhar_obstaculo(5144,8,1,cor_mapa,bitmap_address)
-desenhar_obstaculo(4652,3,2,cor_mapa,bitmap_address)
+	desenhar_obstaculo(6156,5,5,cor_mapa,bitmap_address)
 
+	desenhar_obstaculo(6180,1,5,cor_mapa,bitmap_address)
+	desenhar_obstaculo(6184,4,3,cor_mapa,bitmap_address)
 
+	desenhar_obstaculo(7212,10,1,cor_mapa,bitmap_address)
+	desenhar_obstaculo(6204,2,4,cor_mapa,bitmap_address)
 
-desenhar_obstaculo(2868,2,1,cor_mapa,bitmap_address)
-desenhar_obstaculo(2864,1,6,cor_mapa,bitmap_address)
-desenhar_obstaculo(2884,3,1,cor_mapa,bitmap_address)
-desenhar_obstaculo(3148,1,5,cor_mapa,bitmap_address)
-desenhar_obstaculo(4144,7,1,cor_mapa,bitmap_address)
+	desenhar_obstaculo(6216,5,3,cor_mapa,bitmap_address)
+	desenhar_obstaculo(6232,1,5,cor_mapa,bitmap_address)
+	desenhar_obstaculo(6240,5,5,cor_mapa,bitmap_address)
 
-desenhar_obstaculo(4680,3,3,cor_mapa,bitmap_address)
-desenhar_obstaculo(5200,6,1,cor_mapa,bitmap_address)
-desenhar_obstaculo(3412,2,7,cor_mapa,bitmap_address)
-
-desenhar_obstaculo(2900,5,1,cor_mapa,bitmap_address)
-desenhar_obstaculo(3168,2,7,cor_mapa,bitmap_address)
-desenhar_obstaculo(4668,2,4,cor_mapa,bitmap_address)
-desenhar_obstaculo(5676,10,1,cor_mapa,bitmap_address)
-
-desenhar_obstaculo(5656,4,1,cor_mapa,bitmap_address)
-
-desenhar_obstaculo(5720,4,1,cor_mapa,bitmap_address)
-
-desenhar_obstaculo(6156,5,5,cor_mapa,bitmap_address)
-
-desenhar_obstaculo(6180,1,5,cor_mapa,bitmap_address)
-desenhar_obstaculo(6184,4,3,cor_mapa,bitmap_address)
-
-desenhar_obstaculo(7212,10,1,cor_mapa,bitmap_address)
-desenhar_obstaculo(6204,2,4,cor_mapa,bitmap_address)
-
-desenhar_obstaculo(6216,5,3,cor_mapa,bitmap_address)
-desenhar_obstaculo(6232,1,5,cor_mapa,bitmap_address)
-desenhar_obstaculo(6240,5,5,cor_mapa,bitmap_address)
-
-lw $ra, 0($sp)
-addi $sp,$sp,4
-jr $ra
+	lw $ra, 0($sp)
+	addi $sp,$sp,4
+	jr $ra
 
 desenhar_lado:
 
