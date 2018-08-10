@@ -2,7 +2,8 @@
 #Escolher tamanho de pixel 8x8 configuracao tamanho de display 512x256
 # valor ask cacacteres A = 41, S = 53, D = 44, F = 46
 cor:            .word 0x00000fff
-corPac:		.word 0x00f4f442	
+corPac:		.word 0x00f4f442
+corComida:      .word 0x00ffffff	
 cor_mapa:       .word 0x000000e6
 bitmap_address: .word 0x10010000
 key_board_addr: .word 0x00007f04
@@ -119,6 +120,42 @@ desenhar_obstaculo_function:
 	addi $v0,$zero,0
 	jr $ra	
 	
+#Procedimento para desenhar sequencias de alimentos para o pacman na linha(Da direita para esquerda)
+#Com o endereço inicial e final inclusos 
+#$a0 -> Argumento com o endereço inicial
+#$a1 -> Argumento com o endereço final
+#$a2 -> Valor indicando se deseja desenhar linha ou coluna $a2 = 1 então desenha linha
+#	$a2 = 0 então desenha coluna
+.macro desenhar_comida(%endIni, %endFin,%opc)
+	add $a0,$zero,%endIni
+	add $a1,$zero,%endFin
+	add $a2,$zero,%opc
+	jal desenhar_comida_function
+.end_macro
+desenhar_comida_function:
+	lw $t0, bitmap_address
+	lw $t1, bitmap_address
+	
+	bne $a2,1,else 
+		addi $t5,$zero,8
+		j end_if_opc_linha_coluna
+	else:
+		addi $t5,$zero,512
+	end_if_opc_linha_coluna:
+	add $t0,$t0,$a0   #Salvando o endereço inicial em $t0
+	add $t1,$t1,$a1   #Salvando o endereço inicial em $t1
+	addi $t2,$t0,0    #inicializando $t2 para ser utilizado como incremento
+	lw $t3, corComida #Carregando cor comida
+	#sw $t3,0($t1)		
+	loop_desenhar_comida:
+		slt $t4,$t2,$t1 
+		beq $t4,0,exit_loop_desenhar_comida #Dá o branch
+			sw $t3,0($t2)	
+			add $t2,$t2,$t5
+			j loop_desenhar_comida
+	exit_loop_desenhar_comida:
+	jr $ra 	
+	
 #Procedimeto é utilizado para desenhar o mapa do estágio 1 linha por linha e coluna por coluna
 desenhar_mapa_1:
 addi $sp,$sp,-4
@@ -195,7 +232,60 @@ sw   $ra,0($sp)
 	desenhar_linha(7240,7284,cor_mapa, bitmap_address)	
 	desenhar_coluna(6752,7264,cor_mapa, bitmap_address)
 	desenhar_coluna(4192,5728,cor_mapa, bitmap_address)
+	###########################
+	#      Desenhado comida   #
+	###########################
+	desenhar_comida(7432,7540,1)
+	#Sequencia de comandos para desenhar acomida
+	#Parte inferior do mapa
+	desenhar_comida(6920,7176,0)
+	desenhar_comida(6668,6672,1)
+	desenhar_comida(6928,6940,1)
+	desenhar_comida(6944,6972,1)
+	desenhar_comida(6980,7008,1)
+	desenhar_comida(6980,7008,1)
+	desenhar_comida(7012,7024,1)
+	desenhar_comida(7028,7032,1)
+	desenhar_comida(6768,6772,1)
+	desenhar_comida(5384,6152,0)
+	desenhar_comida(6156,6160,1)
+	desenhar_comida(5392,5396,1)
+	desenhar_comida(2840,6936,0)
+	desenhar_comida(5660,5688,1)
+	desenhar_comida(6432,6504,1)
+	desenhar_comida(2916,7268,0)
+	desenhar_comida(3872,5664,0)
+	desenhar_comida(5156,5208,1)
+	desenhar_comida(3676,5980,0)
+	desenhar_comida(6212,6468,0)
+	desenhar_comida(5700,5728,1)
+	desenhar_comida(5944,5948,1)
+	desenhar_comida(6416,6420,1)
+	desenhar_comida(6508,6512,1)
+	desenhar_comida(6256,6260,1)
+	desenhar_comida(5484,5496,1)
+	desenhar_comida(6004,6008,1)
 
+	#parte superior do mapa
+	desenhar_comida(520,568,1)
+	desenhar_comida(580,632,1)
+	desenhar_comida(1032,2312,0)
+	desenhar_comida(1140,2420,0)
+	desenhar_comida(1052,1820,0)
+	desenhar_comida(824,1592,0)
+	desenhar_comida(1092,1860,0)
+	desenhar_comida(864,1632,0)
+	desenhar_comida(1808,1908,1)
+	desenhar_comida(2572,2592,1)
+	desenhar_comida(2656,2676,1)
+	desenhar_comida(2848,2876,1)
+	desenhar_comida(2884,2912,1)
+	
+	#Desenhando pontas
+	desenhar_comida(3852,3856,1)
+	desenhar_comida(3952,3956,1)
+	
+	
 lw $ra, 0($sp)
 addi $sp,$sp,4
 jr $ra
@@ -292,6 +382,60 @@ sw   $ra,0($sp)
 	desenhar_obstaculo(6216,5,3,cor_mapa,bitmap_address)
 	desenhar_obstaculo(6232,1,5,cor_mapa,bitmap_address)
 	desenhar_obstaculo(6240,5,5,cor_mapa,bitmap_address)
+	
+	###########################
+	#      Desenhado comida   #
+	###########################
+	desenhar_comida(7432,7540,1)
+	desenhar_comida(5896,7176,0)
+	desenhar_comida(5904,5948,1)
+	desenhar_comida(6432,7200,0)
+	desenhar_comida(6952,6972,1)
+	desenhar_comida(6456,6460,1)
+	
+	desenhar_comida(5956,6000,1)
+	desenhar_comida(6468,6472,1)
+	desenhar_comida(6236,7516,0)
+	desenhar_comida(6980,7000,1)
+	desenhar_comida(6260,7540,0)
+
+	desenhar_comida(5400,5436,1)
+	desenhar_comida(5444,5480,1)
+	desenhar_comida(4920,4924,1)
+	desenhar_comida(4932,4936,1)
+	#Parte do meio
+	desenhar_comida(1044,5908,0)
+	desenhar_comida(3360,5152,0)
+	desenhar_comida(4888,4892,1)
+	desenhar_comida(2348,4652,0)
+	desenhar_comida(2384,4688,0)
+	desenhar_comida(3156,3412,0)
+	desenhar_comida(3164,4956,0)
+	desenhar_comida(4960,5216,0)
+	desenhar_comida(1128,5992,0)
+	desenhar_comida(2648,2904,0)
+	desenhar_comida(2596,2852,0)
+	
+	#Parte superior
+	desenhar_comida(2080,2108,1)
+	desenhar_comida(2116,2144,1)
+	desenhar_comida(544,1824,0)
+	desenhar_comida(812,1580,0)
+	desenhar_comida(848,1616,0)
+	desenhar_comida(1072,1100,1)
+	desenhar_comida(560,588,1)
+	desenhar_comida(604,2396,0)
+	desenhar_comida(1136,1140,0)
+	desenhar_comida(884,1140,0)
+	#desenhando pontas
+	desenhar_comida(612,624,1)
+	desenhar_comida(528,540,1)
+	desenhar_comida(776,1032,0)
+	
+	desenhar_comida(1036,1040,1)
+	desenhar_comida(1592,1848,0)
+	desenhar_comida(1604,1860,0)
+		
 
 	lw $ra, 0($sp)
 	addi $sp,$sp,4
@@ -603,11 +747,13 @@ calcular_desenhar_function:
 .globl main
 main:
 
-jal desenhar_mapa_2
+jal desenhar_mapa_1
 addi $s0, $zero,0
 calcular_desenhar($s0) 
-#jal desenhar_lado
-
 	
+	
+	#Sequencia de comandos para desenhar acomida
+	#Parte inferior do mapa
+				
 addi $v0, $zero,10
 syscall
