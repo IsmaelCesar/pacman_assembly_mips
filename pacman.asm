@@ -9,10 +9,10 @@
 #########################################################
 #   em "settings -> memory configuration" setar valor   #
 #   default.						#
-#########################################################			
+#########################################################		
 .include "mapa.asm"
 .include "numeros.asm"
-.include "dizeres.asm"
+.include "dizeres.asm"	
 .data
 cor:            .word 0x00000fff
 corPac:		.word 0x00f4f442
@@ -42,7 +42,7 @@ pintar_movimento:
 			addi $v0, $zero, 1 #Retorno indicando que personagem se mouveu
 	exit_cmp_1:
 jr $ra
-	
+
 
 .globl main
 main:
@@ -50,9 +50,7 @@ main:
 jal desenhar_mapa_1
 addi $s0, $zero,789
 calcular_desenhar($s0) 
-jal desenhar_lado
-
-	
+jal desenhar_lado	
 	
 	#Sequencia de comandos para desenhar acomida
 	#Parte inferior do mapa

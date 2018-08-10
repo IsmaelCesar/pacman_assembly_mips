@@ -21,7 +21,7 @@ desenhar_linha_function:
 	addi $a0,$a0,4
 	bne $a0, $a1, loop_desenhar_linha
 	jr $ra
-
+	
 #Procedimento para escrever coluna por coluna
 # $a0 -> Argumento com o endereço inicial
 # $a1 -> Argumento contendo endereço final
@@ -51,9 +51,9 @@ desenhar_coluna_fuction:
 # $a3 -> Argumento com a cor
 # $v0 -> Argumento extra com o bit map address
 .macro desenhar_obstaculo(%endCel, %larg, %alt, %cor, %endBase)
-	addi $a0,$zero,%endCel
-	addi $a1,$zero,%larg
-	addi $a2,$zero,%alt
+	add $a0,$zero,%endCel
+	add $a1,$zero,%larg
+	add $a2,$zero,%alt
 	lw   $a3,%cor
 	lw   $v0,%endBase
 	jal desenhar_obstaculo_function
@@ -86,6 +86,7 @@ desenhar_obstaculo_function:
 	exit_loop1_desenhar_obst:
 	addi $v0,$zero,0
 	jr $ra	
+
 	
 #Procedimento para desenhar sequencias de alimentos para o pacman na linha(Da direita para esquerda)
 #Com o endereço inicial e final inclusos 
