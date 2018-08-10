@@ -12,12 +12,13 @@
 #########################################################		
 .include "mapa.asm"
 .include "numeros.asm"
-.include "dizeres.asm"	
+.include "lado.asm"	
 .data
 cor:            .word 0x00000fff
 corPac:		.word 0x00f4f442
 corComida:      .word 0x00ffffff	
 cor_mapa:       .word 0x000000e6
+vidas:          .word 3  	#Quantidade de vidas
 bitmap_address: .word 0x10010000
 key_board_addr: .word 0x00007f04
 bitmap_size:    .word 16384 #  512 x 256 = 131072 / 8 Tamano de Pixel = 16284 pixls
