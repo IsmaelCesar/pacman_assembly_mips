@@ -159,9 +159,42 @@ mover_para_esquerda_function:
 ####################### Tirando os fantasmas da caixinha ##########################
 # $a0 -> Arqugmento com o endereço da célula em que o fantasminha está
 # $a1 -> Argumento com a cor do fantasma
-.macro tirar_fantasma_caixinha(%endIni,%corFant)
+#########Retorna a nova posicao do fantasma##########
+# $v0 -> Retorno
+.macro mover_fantasma(%endIni,%corFant)
 	add $a0,$zero,%endIni
 	lw  $a1, %corFant
-	jal tirar_fantasma_caixinha_function
+	lw  $a2,bitmap_address
+	jal mover_fantasma_function
 .end_macro
-tirar_fantasma_caixinha_function:
+mover_fantasma_function:
+	addi $sp,$sp,-4
+	sw   $ra,0($sp)
+	###############
+	#Salvando valores em temporários
+	addi $t0,$a0,0
+	addi $t1,$a1,0
+	addi $t2,$a2,0
+        #Adicionando valor da célula à bitmap_address em temporarios para incremento
+	add $t3,$t0,$t2 #Computar movimeto para o esquera
+	add $t4,$t0,$t2 #Computar movimento para direita
+	add $t5,$t0,$t2 #Computar movimento para cima
+	add $t6,$t0,$t2 #Computar movimento para baixo
+	
+	addi $t3,$t3,-4
+	addi $t4,$t4,4
+	addi $t5,$t5,-256
+	addi $t6,$t6,256
+	
+	addi $t7,$zero,0 #zerando registrador auxiliar para computar movimento válido
+	
+	
+	
+	
+	#############
+	lw $ra,0($sp)
+	addi $sp,$sp,4
+	jr $ra
+	
+	
+	
