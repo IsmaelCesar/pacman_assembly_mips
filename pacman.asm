@@ -18,7 +18,8 @@
 # $s0 -> Guardar� os pontons                            #
 # $s1,$s2,$s3,$s4 -> Guardar� a posi��o da c�lula dos   #
 # 		     dos fantasmas no seu respectivo    #
-#		     est�gio(Vermelho,Azul,Laranja,Rosa)#
+#		     est�gio(Vermelho,Azul,Laranja,Rosa)
+#	$s5 -> armazena a tecla
 #########################################################		
 .include "mapa.asm"
 .include "numeros.asm"
@@ -133,6 +134,7 @@ obter_direcao:
 	addi $sp,$sp,-4
 	sw   $ra, 0($sp)
 	jal obter_tecla
+	
 andar: 
 #Prcedimento para efetuar o movimento dos fantasmas
 # $a0 -> itera��o atual
@@ -168,7 +170,10 @@ loop_estagio_1:
 exit_loop_estagio_1:
 	loop_principal:
 		#jal movimentar_fantasmas
-		jal movimentaPacMan
+		jal obter_direcao
+		addi $sp,$sp,-4
+		sw   $ra, 0($sp)
+		verificaTecla($s5)
 		#jal verificaVitoria
 	j loop_principal
 				
