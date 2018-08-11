@@ -14,6 +14,11 @@
 #########################################################
 # $s7 -> Armazenará acor da comida, pro caso de um      #
 #        fantasma se mover sobre ela			#
+# $s6 -> Armazenará a posição do pacman			#
+# $s0 -> Guardará os pontons                            #
+# $s1,$s2,$s3,$s4 -> Guardará a posição da célula dos   #
+# 		     dos fantasmas no seu respectivo    #
+#		     estágio				#
 #########################################################		
 .include "mapa.asm"
 .include "numeros.asm"
@@ -65,7 +70,13 @@ inicializar_primeiro_estagio:
 	addi $s0, $zero,0
 	calcular_desenhar($s0) 
 	desenhar_lado(1)
-
+	#Desenhando pacman (Para testes)
+	lw $t0,corPac
+	lw $t1,bitmap_address
+	addi $t1,$t1,5184
+	sw $t0,0($t1)
+	add $s6,$zero,$t1
+	#################
 	desenhar_obstaculo(4664,1,1,corVernelha,bitmap_address)
 	desenhar_obstaculo(4668,1,1,corAzul,bitmap_address)
 	desenhar_obstaculo(4672,1,1,corLaranja,bitmap_address)
@@ -82,12 +93,22 @@ inicializar_segundo_estagio:
 	jal desenhar_mapa_2
 	addi $s0, $zero,0
 	calcular_desenhar($s0) 
-	desenhar_lado(1)
+	desenhar_lado(2)
+	
+	
+	#Desenhando pacman (Para testes)
+	lw $t0,corPac
+	lw $t1,bitmap_address
+	addi $t1,$t1,4416
+	sw $t0,0($t1)
+	add $s6,$zero,$t1
+	#################
 
 	desenhar_obstaculo(3896,1,1,corVernelha,bitmap_address)
 	desenhar_obstaculo(3900,1,1,corAzul,bitmap_address)
 	desenhar_obstaculo(3904,1,1,corLaranja,bitmap_address)
 	desenhar_obstaculo(3908,1,1,corRosa,bitmap_address)
+	
 
 	lw $ra,0($sp)
 	addi $sp,$sp,4
@@ -98,6 +119,11 @@ main:
 
 jal inicializar_primeiro_estagio
 
+loop_estagio_1:
+	beq $s0,10,exit_loop_estagio_1
+		#jal tirar_fantasmas_caixinha
+	j loop_estagio_1
+exit_loop_estagio_1:
 
 				
 addi $v0, $zero,10

@@ -14,6 +14,8 @@
 #########################################################
 # $s7 -> Armazenará acor da comida, pro caso de um      #
 #        fantasma se mover sobre ela			#
+# $s6 -> Armazenará a posição do pacman			#
+# $s0 -> Guardará os pontons                            #
 #########################################################
 
 ################Paralizando tempo ######################
@@ -24,7 +26,7 @@
 	jal sleep_function
 .end_macro
 sleep_function:
-	lw $v0,32
+	li $v0,32
 	syscall	
 	jr $ra
 
@@ -271,10 +273,10 @@ mover_fantasma_corredor_function:
 		sw $t4,0($t0)	
 		sleep(500)
 		addi $v0,$zero,0 #zerando retorno
-		addi $t0,$t0,$t2 #Continuando moviento anterior
+		add $t0,$t0,$t2 #Continuando moviento anterior
 		lw   $t5,0($t0)  #carregando valor da próxima célula em $t5
 		sw   $t1,0($t0)  
-		addi $s7,$zero,$t5
+		add $s7,$zero,$t5
 		addi $v0,$zero,1  #retorno inicando que personagem se moveu por um corredor
 	exit_case_encrusilhada:
 	
@@ -284,5 +286,29 @@ mover_fantasma_corredor_function:
 	addi $sp,$sp,4
 	jr $ra
 	
-	
-	
+#######O primeiro movimento dos fantasmas sempre será sair da caixinha
+#Será um procedimento para cada mapa.
+# $a0 -> argumento contendo a iteração atual. Caso seja a primeira iteração
+#        Os fantasmas farão um movimento específico
+.macro tirar_fantasmas_caixa(%iteracao)
+	add $a0,$zero,0
+	jal tirar_fantasmas_caixa_function
+.end_macro
+tirar_fantasmas_caixa_function:	
+	addi $sp,$sp,-4
+	sw   $ra,0($sp)
+	############## Se $a0 for igual a 0, então está na primeira iteração
+	bne  $a0,0,exit_is_primeira_iteracao
+		mover_para_cima($s2,corAzul)
+		addi $s2,$v0,0   #Salvando posição atual do fantasma
+		mover_para_cima($s3,corLaranja)
+		addi $s3,$v0,0   #Salvando posicao atualizada
+		mover_para_direita($s1,corVernelha)
+		addi $s1,$v0,0   #Salvando posicao atualizada
+		mover_para_esquerda($s4,corRosa)
+		addi $s4,$v0,0   #Salvando posição atualizada do pacman
+	exit_is_primeira_iteracao:
+	#############
+	lw $ra,0($sp)
+	addi $sp,$sp,4
+	jr $ra
