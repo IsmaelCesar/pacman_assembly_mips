@@ -59,25 +59,29 @@ desenhar_lado(1)
 
 lw $s3, corPac
 lw $s2,bitmap_address
-addi $s2,$s2,5152
+addi $s2,$s2,5656
 sw $s3,0($s2)
 
 ##Dando um tempo de 0,5 segundos
 	li $v0,32
 	addi $a0,$zero,500 
 	syscall
-mover_para_cima(5152,corPac)
+mover_para_direita(5656,corPac)
 addi $s2,$v0,0 #Salvando retorno
 addi $t0,$zero,0 #inicializando contador
 addi $sp,$sp,-4
 loop_repertir_movimento:
 	
-	beq  $t0,10,exit_loop_repetir_movimento
+	beq  $t0,9,exit_loop_repetir_movimento
 		addi $t0,$t0,1
 		sw   $t0,0($sp)
-		mover_para_cima($s2,corPac)	
+		mover_para_direita($s2,corPac)	
 		lw   $t0,0($sp)
 		addi $s2,$v0,0#Salvando retorno
+		##Dando um tempo de 0,5 segundos
+		li $v0,32
+		addi $a0,$zero,1000 
+		syscall
 		j loop_repertir_movimento	
 
 exit_loop_repetir_movimento:
