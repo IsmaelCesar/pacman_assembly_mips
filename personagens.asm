@@ -21,6 +21,50 @@
 #		     estágio(Vermelho,Azul,Laranja,Rosa)#
 #########################################################
 
+
+#Macros auxiliares para pegar os movimentos dos fantasmas vermelho, azul, laranja e rosa
+# respectivamente
+.macro salvar_movimento_vermelho(%movFantasma)
+	la $t0, movimentos
+	sw %movFantasma,0($t0)
+.end_macro
+
+.macro salvar_movimento_azul(%movFantasma)
+	la $t0, movimentos
+	sw %movFantasma,4($t0)
+.end_macro
+
+.macro  salvar_movimento_laranja(%movFantasma)
+	la $t0, movimentos
+	sw %movFantasma,8($t0)
+.end_macro
+
+.macro salvar_movimento_rosa(%movFantasma)
+	la $t0, movimentos
+	sw %movFantasma,12($t0)
+.end_macro
+
+.macro carregar_movimento_vermelho(%movFantasma)
+	la $t0, movimentos
+	lw %movFantasma,0($t0)
+.end_macro
+
+.macro carregar_movimento_azul(%movFantasma)
+	la $t0, movimentos
+	lw %movFantasma,4($t0)
+.end_macro
+
+.macro  carregar_movimento_laranja(%movFantasma)
+	la $t0, movimentos
+	lw %movFantasma,8($t0)
+.end_macro
+
+.macro carregar_movimento_rosa(%movFantasma)
+	la $t0, movimentos
+	sw %movFantasma,12($t0)
+.end_macro
+
+
 ################Paralizando tempo ######################
 #Procedimento para pausar o tempo simulando um movimento
 #$a0 -> Tempo em milisegundos o qual se deseja pausar
@@ -338,38 +382,37 @@ buscar_movimento_valido_function:
 	
 #Procedimento para mover o fantasma vermelho Cujo endereço atual está em $s1
 # $a0 -> Argumento com o endereço inicial da célula do fantasma vermelho
-# $a1 -> Argumento com a célula com o pacman posicionado
 # $a2 -> Argumento com o movimento anterior
-.macro mover_laranja(%endPac,%movimentoAnt) 
-	add  $a0,$zero,%endPac
+.macro mover_laranja(%movimentoAnt) 
+	#add  $a0,$zero,%endPac
 	add  $a1,$zero,%movimentoAnt
 	jal  mover_laranja_function
 .end_macro
 mover_laranja_function:
 	save_return_address
-	addi $t0,$a0,0 #Salvando movimento em temporário
+	#addi $t0,$a0,0 #Salvando movimento em temporário
 	addi $t1,$a1,0 #Salvando movimento em temporário
 	##############
-	addi $sp,$sp,-8
-	sw   $t0,0($sp)
+	addi $sp,$sp,-4
+	#sw   $t0,0($sp)
 	sw   $t1,4($sp)
 	verificar_movimento_valido($s3,$t1)
-	lw   $t0,0($sp)
+	#lw   $t0,0($sp)
 	lw   $t1,4($sp)
-	addi $sp,$sp,8
+	addi $sp,$sp,4
 	
 	bne $v0,1,else_movimento
 		#caso seja um movimento válido
 		#verifica se está num corredor
 		j exit_if_movimento
 	else_movimento:
-		addi $sp,$sp,-8
-		sw   $t0,0($sp)
+		addi $sp,$sp,-4
+		#sw   $t0,0($sp)
 		sw   $t1,4($sp)
 		buscar_movimento_valido($s3)
-		lw   $t0,0($sp)
+		#lw   $t0,0($sp)
 		lw   $t1,4($sp)
-		addi $sp,$sp,8
+		addi $sp,$sp,4
 		#Direita
 		bne $v0,4,if_movimento_is_esquerda
 			mover_para_direita($s3,corLaranja)
