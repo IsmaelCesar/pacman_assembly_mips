@@ -156,34 +156,59 @@ mover_para_esquerda_function:
 	addi $v0,$t0,0    #retornando o endereço da célula	
 	jr $ra
 
-####################### Tirando os fantasmas da caixinha ##########################
+###############Verificar movimento válido
+#Procedimento para fazer a verificação de movimento válido de um personagem
+# $a0 -> Argumento com movimento 1
+# $a1 -> Argumento com movimento 2
+# $a2 -> Argumento com a cor do personagem
+###########Retorna 1 se o personagem estiver num corredor
+# $v0 -> Retorno indicando se o personagem está num corredor
+.macro verificar_corredor(%primeiroMov,%segundoMov,%cor)
+	add $a0,$zero,%primeiroMov
+	add $a1,$zero,%segundoMov
+	add $a2,$zero,%cor
+	jal verificar_corredor_function
+.end_macro
+verificar_corredor_function:
+	#Salvando em temporarios
+	addi $t0,$a0,0
+	addi $t1,$a1,0
+	addi $t2,$a2,0
+	
+	#carregando cores armazenadas nas células
+	lw  $t3,0($t0)
+	lw  $t4,0($t1)
+	lw  $t5,cor_mapa
+	addi $v0,$zero,0 #zerando retorno
+	
+	# Se os lados do personagem forem da cor do mapa então trata-se de um corredor
+	seq $t6,$t3,$t5
+	seq $t6,$t4,$t5
+	beq $t6,0,exit_is_corredor
+		addi $v0,$zero,1
+	exit_is_corredor:
+	
+	jr $ra
+
+#######################Efetuando movimento dos fantasmaas #############
+#Se o próximo movimento não for um movimento válido, o fantasma continua
+#com o movimento anterior
 # $a0 -> Arqugmento com o endereço da célula em que o fantasminha está
 # $a1 -> Argumento com a cor do fantasma
+# $a2 -> 
 #########Retorna a nova posicao do fantasma##########
 # $v0 -> Retorno
-.macro mover_fantasma(%endIni,%corFant)
+.macro mover_fantasma(%endIni,%corFant,%movAnt)
 	add $a0,$zero,%endIni
 	lw  $a1, %corFant
-	lw  $a2,bitmap_address
+	add $a2,$zero,%movAnt
+	lw  $a3,bitmap_address
 	jal mover_fantasma_function
 .end_macro
 mover_fantasma_function:
 	addi $sp,$sp,-4
 	sw   $ra,0($sp)
-	###############
-	#Salvando valores em temporários
-	addi $t0,$a0,0
-	addi $t1,$a1,0
-	addi $t2,$a2,0
-        #Adicionando valor da célula à bitmap_address em temporarios para incremento
-	add $t3,$t0,$t2 #Computar movimeto para o esquera
-	add $t4,$t0,$t2 #Computar movimento para direita
 	
-	#Movimentos para esquerda e para direita
-	addi $t3,$t3,-4
-	addi $t4,$t4,4
-	
-
 	
 	#############
 	lw $ra,0($sp)
