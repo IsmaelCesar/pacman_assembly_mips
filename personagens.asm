@@ -312,7 +312,26 @@ mover_fantasma_corredor_function:
 	lw $ra,0($sp)
 	addi $sp,$sp,4
 	jr $ra
+
+#Procedimento para mover o fantasma vermelho
+# $a0 -> Argumento com o endereço inicial da célula do fantasma vermelho
+# $a1 -> Argumento com a célula com o pacman posicionado
+# $a2 -> Argumento com o movimento anterior
+.macro mover_vermelho(%endIni,%endPac,%movimentoAnt) 
+	add  $a0,$zero,%endIni
+	add  $a1,$zero,%endPac
+	add  $a2,$zero,%movimentoAnt
+	jal  mover_vermelho_function
+.end_macro
+mover_vermelho_function:
+	save_return_address
+	##############
 	
+	
+	##############
+	get_return_address
+	jr $ra
+
 #######O primeiro movimento dos fantasmas sempre será sair da caixinha
 #Será um procedimento para cada mapa.
 # $a0 -> argumento contendo a iteração atual. Caso seja a primeira iteração
@@ -324,8 +343,7 @@ mover_fantasma_corredor_function:
 	jal tirar_fantasmas_caixa_function
 .end_macro
 tirar_fantasmas_caixa_function:	
-	addi $sp,$sp,-4
-	sw   $ra,0($sp)
+	save_return_address
 	############## Se $a0 for igual a 0, então está na primeira iteração
 	bne  $a0,0,exit_is_primeira_iteracao
 		mover_para_cima($s2,corAzul)
@@ -350,6 +368,5 @@ tirar_fantasmas_caixa_function:
 		addi $s4,$v0,0   #Salvando posição atualizada do pacman
 	exit_primeiros_movimento:
 	#############
-	lw $ra,0($sp)
-	addi $sp,$sp,4
+	get_return_address
 	jr $ra
