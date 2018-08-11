@@ -56,12 +56,12 @@ mover_para_cima_function:
 	add $t2,$a2,$zero   #Somando o valor a o endereço base
 	lw   $t3, corPreta #Carregando cor preta no registrador	
 
-	add $t4,$a2,$t0    #Carregando endereço da célula junto com o base em $t4
-	sw $t3,0($t4)      #Salvando a cor preta no endereço antigo
-	
 	##Dando um tempo de 0,5 segundos
 	sleep(500)
 	
+	add $t4,$a2,$t0    #Carregando endereço da célula junto com o base em $t4
+	sw $t3,0($t4)      #Salvando a cor preta no endereço antigo
+		
 	addi $t0,$t0,-256 #Movendo pra cima
 	add $t2,$t2,$t0 
 	sw   $t1,0($t2)
@@ -86,22 +86,28 @@ mover_para_cima_function:
 	jal mover_para_baixo_function
 .end_macro
 mover_para_baixo_function:
+	addi $sp,$sp,-4
+	sw   $ra,0($sp)
+	###############
 
 	addi $t0,$a0,0     #Salvando endereço da célula em temporário
 	addi $t1,$a1,0     #Salvando cor do personagem em temporário
 	add $t2,$a2,$zero   #Somando o valor a o endereço base
 	lw   $t3, corPreta #Carregando cor preta no registrador	
 
-	add $t4,$a2,$t0    #Carregando endereço da célula junto com o base em $t4
-	sw $t3,0($t4)      #Salvando a cor preta no endereço antigo
-	
 	##Dando um tempo de 0,5 segundos
 	sleep(500)
 	
+	add $t4,$a2,$t0    #Carregando endereço da célula junto com o base em $t4
+	sw $t3,0($t4)      #Salvando a cor preta no endereço antigo
+		
 	addi $t0,$t0,256 #Movendo pra baixo
 	add $t2,$t2,$t0 
 	sw   $t1,0($t2)
 	
+	###############
+	lw   $ra,0($sp)
+	addi $sp,$sp,4	
 	addi $v0,$t0,0    #retornando o endereço da célula	
 	jr $ra
 
@@ -119,22 +125,28 @@ mover_para_baixo_function:
 	jal mover_para_direita_function
 .end_macro
 mover_para_direita_function:
+	addi $sp,$sp,-4
+	sw   $ra,0($sp)
+	###############
 
 	addi $t0,$a0,0     #Salvando endereço da célula em temporário
 	addi $t1,$a1,0     #Salvando cor do personagem em temporário
 	add $t2,$a2,$zero   #Somando o valor a o endereço base
 	lw   $t3, corPreta #Carregando cor preta no registrador	
 
-	add $t4,$a2,$t0    #Carregando endereço da célula junto com o base em $t4
-	sw $t3,0($t4)      #Salvando a cor preta no endereço antigo
-	
 	##Dando um tempo de 0,5 segundos
 	sleep(500)
+
+	add $t4,$a2,$t0    #Carregando endereço da célula junto com o base em $t4
+	sw $t3,0($t4)      #Salvando a cor preta no endereço antigo
 	
 	addi $t0,$t0,4    #Movendo pra direita
 	add  $t2,$t2,$t0 
 	sw   $t1,0($t2)
 	
+	###############
+	lw   $ra,0($sp)
+	addi $sp,$sp,4	
 	addi $v0,$t0,0    #retornando o endereço da célula	
 	jr $ra
 	
@@ -152,22 +164,28 @@ mover_para_direita_function:
 	jal mover_para_esquerda_function
 .end_macro
 mover_para_esquerda_function:
+	addi $sp,$sp,-4
+	sw   $ra,0($sp)
+	###############
 
 	addi $t0,$a0,0     #Salvando endereço da célula em temporário
 	addi $t1,$a1,0     #Salvando cor do personagem em temporário
 	add $t2,$a2,$zero   #Somando o valor a o endereço base
 	lw   $t3, corPreta #Carregando cor preta no registrador	
 
-	add $t4,$a2,$t0    #Carregando endereço da célula junto com o base em $t4
-	sw $t3,0($t4)      #Salvando a cor preta no endereço antigo
-	
 	##Dando um tempo de 0,5 segundos
 	sleep(500)
+		
+	add $t4,$a2,$t0    #Carregando endereço da célula junto com o base em $t4
+	sw $t3,0($t4)      #Salvando a cor preta no endereço antigo
 	
 	addi $t0,$t0,-4 #Movendo pra esquerda
 	add $t2,$t2,$t0 
 	sw   $t1,0($t2)
 	
+	###############
+	lw   $ra,0($sp)
+	addi $sp,$sp,4	
 	addi $v0,$t0,0    #retornando o endereço da célula	
 	jr $ra
 
@@ -299,8 +317,10 @@ mover_fantasma_corredor_function:
 #Será um procedimento para cada mapa.
 # $a0 -> argumento contendo a iteração atual. Caso seja a primeira iteração
 #        Os fantasmas farão um movimento específico
-.macro tirar_fantasmas_caixa(%iteracao)
-	add $a0,$zero,0
+# $a1 -> Argumento contendo a quantidade de movimentos iniciais que os fantasmas tem que fazer
+.macro tirar_fantasmas_caixa(%iteracao,%qtdMovIni)
+	add $a0,$zero,%iteracao
+	add $a1,$zero,%qtdMovIni
 	jal tirar_fantasmas_caixa_function
 .end_macro
 tirar_fantasmas_caixa_function:	
@@ -318,7 +338,8 @@ tirar_fantasmas_caixa_function:
 		addi $s4,$v0,0   #Salvando posição atualizada do pacman
 		j exit_primeiros_movimento
 	exit_is_primeira_iteracao:
-	beq  $a0,7,exit_primeiros_movimento
+	slt $t0,$a0,$a1
+	beq  $t0,0,exit_primeiros_movimento
 		mover_para_cima($s2,corAzul)
 		addi $s2,$v0,0   #Salvando posição atual do fantasma
 		mover_para_cima($s3,corLaranja)

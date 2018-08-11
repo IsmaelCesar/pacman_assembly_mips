@@ -136,7 +136,7 @@ jal inicializar_primeiro_estagio
 
 loop_estagio_1:
 	beq $s0,10,exit_loop_estagio_1
-		tirar_fantasmas_caixa($s0)
+		tirar_fantasmas_caixa($s0,5)
 		addi $s0,$s0,1
 	j loop_estagio_1
 exit_loop_estagio_1:
