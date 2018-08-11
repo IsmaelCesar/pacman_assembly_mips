@@ -15,12 +15,17 @@
 .include "lado.asm"	
 .include "personagens.asm"
 .data
+#Cores
 cor:            .word 0x00000fff
 corPac:		.word 0x00f4f442
 corVernelha:    .word 0x00ff0000
+corRosa:        .word 0x00ff99cc
+corAzul:        .word 0x0099ccff
+corLaranja:     .word 0x00ff9966
 corPreta:       .word 0x00000000
 corComida:      .word 0x00ffffff	
 cor_mapa:       .word 0x000000e6
+#################################
 vidas:          .word 3  	#Quantidade de vidas
 bitmap_address: .word 0x10010000
 key_board_addr: .word 0x00007f04
@@ -47,7 +52,19 @@ pintar_movimento:
 	exit_cmp_1:
 jr $ra
 
-
+pintar_fantasmas:
+	addi $sp,$sp,-4
+	sw   $ra, 0($sp)
+	
+	desenhar_obstaculo(4652,1,1,corVermelha,bitmap_address)
+	desenhar_obstaculo(4660,1,1,corAzul,bitmap_address)
+	desenhar_obstaculo(4664,1,1,corLaranja,bitmap_address)
+	desenhar_obstaculo(4668,1,1,corRosa,bitmap_address)
+	
+	lw $ra,0($sp)
+	addi $sp,$sp,4
+	jr $ra
+	
 .globl main
 main:
 
