@@ -93,6 +93,9 @@ main:
 
 jal inicializar_primeiro_estagio
 
+loop_gigante:
+
+j loop_gigante
 
 				
 addi $v0, $zero,10
