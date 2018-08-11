@@ -14,6 +14,11 @@
 #########################################################
 # $s7 -> Armazenará acor da comida, pro caso de um      #
 #        fantasma se mover sobre ela			#
+# $s6 -> Armazenará a posição do pacman			#
+# $s0 -> Guardará os pontons                            #
+# $s1,$s2,$s3,$s4 -> Guardará a posição da célula dos   #
+# 		     dos fantasmas no seu respectivo    #
+#		     estágio(Vermelho,Azul,Laranja,Rosa)#
 #########################################################
 #Procedimento para escrever linha por linha
 # $a0 -> Argumento com o endereço inicial
