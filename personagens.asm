@@ -39,7 +39,7 @@ mover_para_cima_function:
 	addi $a0,$zero,500 
 	syscall
 	
-	addi $t0,$t0,-256 #Movendo pra sima
+	addi $t0,$t0,-256 #Movendo pra cima
 	add $t2,$t2,$t0 
 	sw   $t1,0($t2)
 	
@@ -74,7 +74,7 @@ mover_para_baixo_function:
 	addi $a0,$zero,500 
 	syscall
 	
-	addi $t0,$t0,256 #Movendo pra sima
+	addi $t0,$t0,256 #Movendo pra baixo
 	add $t2,$t2,$t0 
 	sw   $t1,0($t2)
 	
@@ -109,7 +109,7 @@ mover_para_direita_function:
 	addi $a0,$zero,500 
 	syscall
 	
-	addi $t0,$t0,4    #Movendo pra sima
+	addi $t0,$t0,4    #Movendo pra direita
 	add  $t2,$t2,$t0 
 	sw   $t1,0($t2)
 	
@@ -123,11 +123,11 @@ mover_para_direita_function:
 # $a2 -> Bitmap address
 ############# Retorna a posição atualizada#############
 # $v0 -> Posição da célula atualizada
-.macro mover_esquerda_baixo(%posIni,%corPers)
+.macro mover_para_esquerda(%posIni,%corPers)
 	add $a0,$zero,%posIni
 	lw  $a1,%corPers
 	lw  $a2,bitmap_address
-	jal mover_para_baixo_function
+	jal mover_para_esquerda_function
 .end_macro
 mover_para_esquerda_function:
 
@@ -144,7 +144,7 @@ mover_para_esquerda_function:
 	addi $a0,$zero,500 
 	syscall
 	
-	addi $t0,$t0,256 #Movendo pra sima
+	addi $t0,$t0,-4 #Movendo pra esquerda
 	add $t2,$t2,$t0 
 	sw   $t1,0($t2)
 	
