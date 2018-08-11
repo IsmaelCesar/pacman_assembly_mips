@@ -239,6 +239,7 @@ mover_fantasma_corredor_function:
 		lw   $t2,8($sp)
 		lw   $t4,12($sp)
 		lw   $t5,16($sp)
+		addi $sp,$sp,20
 		addi $t3,$v0,0 #salvando retorno em $t3		
 		j end_switch
 	case_ir_cima_baixo:	
@@ -256,16 +257,16 @@ mover_fantasma_corredor_function:
 		lw   $t2,8($sp)
 		lw   $t4,12($sp)
 		lw   $t5,16($sp)
+		addi $sp,$sp,20
 		addi $t3,$v0,0 #salvando retorno em $t3
 	end_switch:
 	
 	#### SW_Case caso o personagem esteja ou não em um corredor
-	beq $t3,0,case_encrusilhada
-		
-		j exit_case_encrusilhada
-	case_encrusilhada:
-	
+	beq $t3,0,exit_case_encrusilhada
+				
 	exit_case_encrusilhada:
+	
+	
 	#############
 	lw $ra,0($sp)
 	addi $sp,$sp,4
