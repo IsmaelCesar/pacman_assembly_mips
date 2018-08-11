@@ -150,3 +150,5 @@ mover_para_esquerda_function:
 	
 	addi $v0,$t0,0    #retornando o endereço da célula	
 	jr $ra
+
+######################Movimento dos personagens #######################
