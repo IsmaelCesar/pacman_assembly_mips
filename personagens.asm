@@ -163,10 +163,9 @@ mover_para_esquerda_function:
 # $a2 -> Argumento com a cor do personagem
 ###########Retorna 1 se o personagem estiver num corredor
 # $v0 -> Retorno indicando se o personagem está num corredor
-.macro verificar_corredor(%primeiroMov,%segundoMov,%cor)
+.macro verificar_corredor(%primeiroMov,%segundoMov)
 	add $a0,$zero,%primeiroMov
 	add $a1,$zero,%segundoMov
-	add $a2,$zero,%cor
 	jal verificar_corredor_function
 .end_macro
 verificar_corredor_function:
@@ -214,17 +213,40 @@ mover_fantasma_function:
 	addi $t1,$a1,0
 	addi $t2,$a2,0
 	addi $t3,$a3,0
-	addi $t0,$t3,$t0 #Somando endereço base a o valor da célula
-	
+	######################
+	add $t0,$t3,$t0 #Somando endereço base a o valor da célula
 	############## SW_CASE para verificar corredor
 	seq  $t4,$t3,4
 	seq  $t5,$t3,-4
 	or   $t6,$t4,$t4 #se o personagem estiver indo pra esquerda ou para direita
+	#Zerando registradores para reuso
+	add $t4,$zero,0				
+	add $t5,$zero,0	
+	#################################
 	beq  $t6,1,case_ir_cima_baixo
-						
+				
+		add $t4,$t0,4
+		add $t5,$t0,-4
+		addi $sp,$sp,-12
+		sw   $t0,0($sp)
+		sw   $t4,4($sp)
+		sw   $t5,8($sp)
+		verificar_corredor($t4,$t5)
+		lw   $t0,0($sp)
+		lw   $t4,4($sp)
+		lw   $t5,8($sp)		
 		j end_switch
 	case_ir_cima_baixo:	
-			
+		add $t4,$t0,4
+		add $t5,$t0,-4
+		addi $sp,$sp,-12
+		sw   $t0,0($sp)
+		sw   $t4,4($sp)
+		sw   $t5,8($sp)
+		verificar_corredor($t4,$t5)
+		lw   $t0,0($sp)
+		lw   $t4,4($sp)
+		lw   $t5,8($sp)
 	
 	end_switch:
 	
