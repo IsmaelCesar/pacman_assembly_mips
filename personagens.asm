@@ -178,18 +178,12 @@ mover_fantasma_function:
         #Adicionando valor da célula à bitmap_address em temporarios para incremento
 	add $t3,$t0,$t2 #Computar movimeto para o esquera
 	add $t4,$t0,$t2 #Computar movimento para direita
-	add $t5,$t0,$t2 #Computar movimento para cima
-	add $t6,$t0,$t2 #Computar movimento para baixo
 	
+	#Movimentos para esquerda e para direita
 	addi $t3,$t3,-4
 	addi $t4,$t4,4
-	addi $t5,$t5,-256
-	addi $t6,$t6,256
 	
-	addi $t7,$zero,0 #zerando registrador auxiliar para computar movimento válido
-	
-	
-	
+
 	
 	#############
 	lw $ra,0($sp)
