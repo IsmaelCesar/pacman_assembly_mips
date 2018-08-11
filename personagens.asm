@@ -195,7 +195,8 @@ verificar_corredor_function:
 #com o movimento anterior
 # $a0 -> Arqugmento com o endereço da célula em que o fantasminha está
 # $a1 -> Argumento com a cor do fantasma
-# $a2 -> 
+# $a2 -> argumento com o movimento anterior do fantasma
+# $a3 -> argumento com o bitmap_address
 #########Retorna a nova posicao do fantasma##########
 # $v0 -> Retorno
 .macro mover_fantasma(%endIni,%corFant,%movAnt)
@@ -208,6 +209,12 @@ verificar_corredor_function:
 mover_fantasma_function:
 	addi $sp,$sp,-4
 	sw   $ra,0($sp)
+	#Salvando valores em temporários
+	addi $t0,$a0,0
+	addi $t1,$a1,0
+	addi $t2,$a2,0
+	addi $t3,$a3,0
+	
 	
 	
 	#############
