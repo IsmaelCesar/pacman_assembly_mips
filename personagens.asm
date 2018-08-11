@@ -216,37 +216,47 @@ mover_fantasma_function:
 	######################
 	add $t0,$t3,$t0 #Somando endereço base a o valor da célula
 	############## SW_CASE para verificar corredor
-	seq  $t4,$t3,4
-	seq  $t5,$t3,-4
+	seq  $t4,$t2,4
+	seq  $t5,$t2,-4
 	or   $t6,$t4,$t4 #se o personagem estiver indo pra esquerda ou para direita
-	#Zerando registradores para reuso
-	add $t4,$zero,0				
-	add $t5,$zero,0	
+		#Zerando registradores para reuso
+		add $t4,$zero,0				
+		add $t5,$zero,0	
 	#################################
 	beq  $t6,1,case_ir_cima_baixo
 				
 		add $t4,$t0,4
 		add $t5,$t0,-4
-		addi $sp,$sp,-12
+		addi $sp,$sp,-20
 		sw   $t0,0($sp)
-		sw   $t4,4($sp)
-		sw   $t5,8($sp)
+		sw   $t1,4($sp)
+		sw   $t2,8($sp)
+		sw   $t4,12($sp)
+		sw   $t5,16($sp)
 		verificar_corredor($t4,$t5)
 		lw   $t0,0($sp)
-		lw   $t4,4($sp)
-		lw   $t5,8($sp)		
+		lw   $t1,4($sp)
+		lw   $t2,8($sp)
+		lw   $t4,12($sp)
+		lw   $t5,16($sp)
+
+				
 		j end_switch
 	case_ir_cima_baixo:	
-		add $t4,$t0,4
-		add $t5,$t0,-4
-		addi $sp,$sp,-12
+		add $t4,$t0,256
+		add $t5,$t0,-256
+		addi $sp,$sp,-20
 		sw   $t0,0($sp)
-		sw   $t4,4($sp)
-		sw   $t5,8($sp)
+		sw   $t1,4($sp)
+		sw   $t2,8($sp)
+		sw   $t4,12($sp)
+		sw   $t5,16($sp)
 		verificar_corredor($t4,$t5)
 		lw   $t0,0($sp)
-		lw   $t4,4($sp)
-		lw   $t5,8($sp)
+		lw   $t1,4($sp)
+		lw   $t2,8($sp)
+		lw   $t4,12($sp)
+		lw   $t5,16($sp)
 	
 	end_switch:
 	
