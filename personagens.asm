@@ -320,10 +320,9 @@ mover_fantasma_corredor_function:
 #############Retorna #############################
 # $v0 -> Valor indicando se o movimento é válido ou não
 # $v1 -> Cor da próxima célula em que o movimento será efetuado
-.macro verificar_movimento_valido(%endFantasma,%movimentoFantasma,%corFantasma)
+.macro verificar_movimento_valido(%endFantasma,%movimentoFantasma)
 	add $a0,$zero,%endFantasma
 	add $a1,$zero,%movimentoFantasma
-	lw  $a2,%corFantasma
 	lw  $a3,bitmap_address
 	jal verificar_movimento_valido_function		
 .end_macro
@@ -366,6 +365,66 @@ verificar_movimento_valido_function:
 	exit_if_movimento_válido:
 	
 	jr $ra
+	
+#Procedimento para eftuar a busca de um movimento válido
+# $a0 -> Argumento com o endereço da célula atual do fantasma
+# $a1 -> Argumento com o bitmap address
+############ Retorna ########################################3
+# $v0 -> valor de incremento com o movimento válido a ser efetuado
+#        pelo personagem
+.macro buscar_movimento_valido(%endMov)
+	add $a0,$zero,%endMov
+	lw  $a1,bitmap_address
+	jal buscar_movimento_valido_function
+.end_macro
+#Macro auxiliar para salvar_registros de ativação e efetuar busca
+.macro macro_salva_carrega_registros_verifica_movimento
+	sw   $t0,0($sp)
+	sw   $t1,4($sp)
+	sw   $t2,8($sp)
+	verificar_movimento_valido($t0,$t2)
+	lw   $t0,0($sp)
+	lw   $t1,4($sp)
+	lw   $t2,8($sp)
+.end_macro
+buscar_movimento_valido_function:
+	save_return_address
+	
+	addi $t0,$a0,0  #salvando argumento em temporário
+	add  $t1,$a1,0
+	
+	#verificando movimento para cima
+	addi $t2,$zero,-256 #movimento para cima
+	addi $sp,$sp,-12
+	
+	#cima
+	macro_salva_carrega_registros_verifica_movimento			
+	bne $v0,0,buscar_movimento_para_baixo
+		j exit_buscar_movimento
+	#baixo
+	buscar_movimento_para_cima:
+	addi $t2,$zero,256
+	macro_salva_carrega_registros_verifica_movimento		
+	bne $v0,0,buscar_movimento_para_direita
+		
+		j exit_buscar_movimento
+	#direita	
+	buscar_movimento_para_direita:
+	addi $t2,$zero,4
+	macro_salva_carrega_registros_verifica_movimento
+	bne $v0,0,buscar_movimento_para_esquerda
+
+		j exit_buscar_movimento
+	#esquerda
+	buscar_movimento_para_esquerda:
+	addi $t2,$zero,-4
+	macro_salva_carrega_registros_verifica_movimento
+	
+	exit_buscar_movimento:
+	addi $sp,$sp,12
+	addi $v0,$t2,0 #Salvando o tipo de incremento no retorno
+	get_return_address
+	jr $ra
 
 #Procedimento para mover o fantasma vermelho Cujo endereço atual está em $s1
 # $a0 -> Argumento com o endereço inicial da célula do fantasma vermelho
@@ -384,15 +443,21 @@ mover_vermelho_function:
 	addi $sp,$sp,-8
 	sw   $t0,0($sp)
 	sw   $t1,4($sp)
-	verificar_movimento_valido($s2,$t1,corVernelha)
+	verificar_movimento_valido($s2,$t1)
 	lw   $t0,0($sp)
 	lw   $t1,4($sp)
 	addi $sp,$sp,8
 	
 	bne $v0,1,else_movimento
 		#caso seja um movimento válido
-		#verificar se está num corredor
+		#verifica se está num corredor
+		j exit_if_movimento
 	else_movimento:
+		addi $sp,$sp,-8
+		sw   $t0,0($sp)
+		sw   $t1,4($sp)
+		
+	exit_if_movimento:
 	##############
 	get_return_address
 	jr $ra
@@ -401,10 +466,8 @@ mover_vermelho_function:
 #Será um procedimento para cada mapa.
 # $a0 -> argumento contendo a iteração atual. Caso seja a primeira iteração
 #        Os fantasmas farão um movimento específico
-# $a1 -> Argumento contendo a quantidade de movimentos iniciais que os fantasmas tem que fazer
 .macro tirar_fantasmas_caixa(%iteracao)
 	add $a0,$zero,%iteracao
-	#add $a1,$zero,%qtdMovIni ,%qtdMovIni
 	jal tirar_fantasmas_caixa_function
 .end_macro
 tirar_fantasmas_caixa_function:	
