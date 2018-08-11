@@ -383,54 +383,59 @@ buscar_movimento_valido_function:
 #Procedimento para mover o fantasma vermelho Cujo endereço atual está em $s1
 # $a0 -> Argumento com o endereço inicial da célula do fantasma vermelho
 # $a2 -> Argumento com o movimento anterior
+############# Retorna 
+# $v0 -> Movimento atual do laranja
 .macro mover_laranja(%movimentoAnt) 
-	#add  $a0,$zero,%endPac
+	add  $a0,$zero,$zero
 	add  $a1,$zero,%movimentoAnt
 	jal  mover_laranja_function
 .end_macro
 mover_laranja_function:
 	save_return_address
-	#addi $t0,$a0,0 #Salvando movimento em temporário
+	addi $t0,$a0,0 #Salvando movimento em temporário
 	addi $t1,$a1,0 #Salvando movimento em temporário
 	##############
-	addi $sp,$sp,-4
-	#sw   $t0,0($sp)
+	addi $sp,$sp,-8
+	sw   $t0,0($sp)
 	sw   $t1,4($sp)
 	verificar_movimento_valido($s3,$t1)
-	#lw   $t0,0($sp)
+	lw   $t0,0($sp)
 	lw   $t1,4($sp)
-	addi $sp,$sp,4
+	addi $sp,$sp,8
 	
 	bne $v0,1,else_movimento
 		#caso seja um movimento válido
 		#verifica se está num corredor
 		j exit_if_movimento
 	else_movimento:
-		addi $sp,$sp,-4
-		#sw   $t0,0($sp)
+		addi $sp,$sp,-8
+		sw   $t0,0($sp)
 		sw   $t1,4($sp)
 		buscar_movimento_valido($s3)
-		#lw   $t0,0($sp)
+		lw   $t0,0($sp)
 		lw   $t1,4($sp)
-		addi $sp,$sp,4
+		addi $sp,$sp,8
 		#Direita
 		bne $v0,4,if_movimento_is_esquerda
 			mover_para_direita($s3,corLaranja)
+			addi $v0,$zero,4
 			j exit_if_movimento
 		#Esquerda
 		if_movimento_is_esquerda:
 		bne $v0,-4,if_movimento_is_cima
 			mover_para_esquerda($s3,corLaranja)
+			addi $v0,$zero,-4
 			j exit_if_movimento
 		#Cima
 		if_movimento_is_cima:							
 		bne $v0,-256,if_movimento_is_baixo
 			mover_para_cima($s3,corLaranja)
+			addi $v0,$zero,-256
 			j exit_if_movimento
 		#Baixo
 		if_movimento_is_baixo:
 			mover_para_baixo($s3,corLaranja)
-		
+			addi $v0,$zero,256
 	exit_if_movimento:
 	##############
 	get_return_address

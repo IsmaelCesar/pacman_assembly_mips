@@ -149,7 +149,7 @@ mover_fantasmas_function:
 		#movimentos laranja	
 		carregar_movimento_laranja($t1)
 		mover_laranja($t1)
-		salvar_movimento_laranja($t1)
+		salvar_movimento_laranja($v0)
 	exit_verificar_movimentacao:
 	
 	get_return_address
