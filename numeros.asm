@@ -9,6 +9,11 @@
 #########################################################
 #   em "settings -> memory configuration" setar valor   #
 #   default.						#
+#########################################################
+#             Outras configurações			#
+#########################################################
+# $s7 -> Armazenará acor da comida, pro caso de um      #
+#        fantasma se mover sobre ela			#
 #########################################################		
 .macro desenhar_numero(%num, %endInicial, %corMapa, %endBase)
 	add $a0,$zero, %num
