@@ -16,6 +16,9 @@
 #        fantasma se mover sobre ela			#
 # $s6 -> Armazenará a posição do pacman			#
 # $s0 -> Guardará os pontons                            #
+# $s1,$s2,$s3,$s4 -> Guardará a posição da célula dos   #
+# 		     dos fantasmas no seu respectivo    #
+#		     estágio(Vermelho,Azul,Laranja,Rosa)#
 #########################################################
 
 ################Paralizando tempo ######################
@@ -44,6 +47,9 @@ sleep_function:
 	jal mover_para_cima_function
 .end_macro
 mover_para_cima_function:
+	addi $sp,$sp,-4
+	sw   $ra,0($sp)
+	###############
 
 	addi $t0,$a0,0     #Salvando endereço da célula em temporário
 	addi $t1,$a1,0     #Salvando cor do personagem em temporário
@@ -60,6 +66,9 @@ mover_para_cima_function:
 	add $t2,$t2,$t0 
 	sw   $t1,0($t2)
 	
+	###############
+	lw   $ra,0($sp)
+	addi $sp,$sp,4	
 	addi $v0,$t0,0    #retornando o endereço da célula	
 	jr $ra
 	
@@ -307,7 +316,18 @@ tirar_fantasmas_caixa_function:
 		addi $s1,$v0,0   #Salvando posicao atualizada
 		mover_para_esquerda($s4,corRosa)
 		addi $s4,$v0,0   #Salvando posição atualizada do pacman
+		j exit_primeiros_movimento
 	exit_is_primeira_iteracao:
+	beq  $a0,7,exit_primeiros_movimento
+		mover_para_cima($s2,corAzul)
+		addi $s2,$v0,0   #Salvando posição atual do fantasma
+		mover_para_cima($s3,corLaranja)
+		addi $s3,$v0,0   #Salvando posicao atualizada
+		mover_para_cima($s1,corVernelha)
+		addi $s1,$v0,0   #Salvando posicao atualizada
+		mover_para_cima($s4,corRosa)
+		addi $s4,$v0,0   #Salvando posição atualizada do pacman
+	exit_primeiros_movimento:
 	#############
 	lw $ra,0($sp)
 	addi $sp,$sp,4

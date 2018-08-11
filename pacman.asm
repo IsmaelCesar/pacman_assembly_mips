@@ -18,7 +18,7 @@
 # $s0 -> Guardará os pontons                            #
 # $s1,$s2,$s3,$s4 -> Guardará a posição da célula dos   #
 # 		     dos fantasmas no seu respectivo    #
-#		     estágio				#
+#		     estágio(Vermelho,Azul,Laranja,Rosa)#
 #########################################################		
 .include "mapa.asm"
 .include "numeros.asm"
@@ -81,6 +81,14 @@ inicializar_primeiro_estagio:
 	desenhar_obstaculo(4668,1,1,corAzul,bitmap_address)
 	desenhar_obstaculo(4672,1,1,corLaranja,bitmap_address)
 	desenhar_obstaculo(4676,1,1,corRosa,bitmap_address)
+	
+	#######################################
+	#Inicializando a posição dos fantasmas#
+	#######################################
+	addi $s1,$zero,4664
+	addi $s2,$zero,4668
+	addi $s3,$zero,4672
+	addi $s4,$zero,4676
 
 	lw $ra,0($sp)
 	addi $sp,$sp,4
@@ -109,7 +117,14 @@ inicializar_segundo_estagio:
 	desenhar_obstaculo(3904,1,1,corLaranja,bitmap_address)
 	desenhar_obstaculo(3908,1,1,corRosa,bitmap_address)
 	
-
+	#######################################
+	#Inicializando a posição dos fantasmas#
+	#######################################
+	addi $s1,$zero,3896
+	addi $s2,$zero,3900
+	addi $s3,$zero,3904
+	addi $s4,$zero,3908
+	
 	lw $ra,0($sp)
 	addi $sp,$sp,4
 	jr $ra
@@ -121,7 +136,8 @@ jal inicializar_primeiro_estagio
 
 loop_estagio_1:
 	beq $s0,10,exit_loop_estagio_1
-		#jal tirar_fantasmas_caixinha
+		tirar_fantasmas_caixa($s0)
+		addi $s0,$s0,1
 	j loop_estagio_1
 exit_loop_estagio_1:
 
