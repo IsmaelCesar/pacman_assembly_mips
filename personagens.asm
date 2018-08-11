@@ -9,7 +9,12 @@
 #########################################################
 #   em "settings -> memory configuration" setar valor   #
 #   default.						#
-#########################################################		
+#########################################################
+#             Outras configurações			#
+#########################################################
+# $s7 -> Armazenará acor da comida, pro caso de um      #
+#        fantasma se mover sobre ela			#
+#########################################################
 
 ################Paralizando tempo ######################
 #Procedimento para pausar o tempo simulando um movimento
@@ -20,8 +25,7 @@
 .end_macro
 sleep_function:
 	lw $v0,32
-	syscall
-	
+	syscall	
 	jr $ra
 
 ################ Movimentos Básicos #####################
@@ -245,28 +249,36 @@ mover_fantasma_corredor_function:
 	case_ir_cima_baixo:	
 		add $t4,$t0,256
 		add $t5,$t0,-256
-		addi $sp,$sp,-20
+		addi $sp,$sp,-12
 		sw   $t0,0($sp)
 		sw   $t1,4($sp)
 		sw   $t2,8($sp)
-		sw   $t4,12($sp)
-		sw   $t5,16($sp)
+		#sw   $t4,12($sp)
+		#sw   $t5,16($sp)
 		verificar_corredor($t4,$t5)
 		lw   $t0,0($sp)
 		lw   $t1,4($sp)
 		lw   $t2,8($sp)
-		lw   $t4,12($sp)
-		lw   $t5,16($sp)
-		addi $sp,$sp,20
+		#lw   $t4,12($sp)
+		#lw   $t5,16($sp)
+		addi $sp,$sp,12
 		addi $t3,$v0,0 #salvando retorno em $t3
 	end_switch:
 	
 	#### SW_Case caso o personagem esteja ou não em um corredor
 	beq $t3,0,exit_case_encrusilhada
-				
+		lw $t4,corPreta #carregando cor preta em temporário
+		sw $t4,0($t0)	
+		sleep(500)
+		addi $v0,$zero,0 #zerando retorno
+		addi $t0,$t0,$t2 #Continuando moviento anterior
+		lw   $t5,0($t0)  #carregando valor da próxima célula em $t5
+		sw   $t1,0($t0)  
+		addi $s7,$zero,$t5
+		addi $v0,$zero,1  #retorno inicando que personagem se moveu por um corredor
 	exit_case_encrusilhada:
 	
-	
+
 	#############
 	lw $ra,0($sp)
 	addi $sp,$sp,4
