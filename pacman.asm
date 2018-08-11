@@ -91,7 +91,7 @@ inicializar_segundo_estagio:
 .globl main
 main:
 
-jal inicializar_primero_estagio
+jal inicializar_primeiro_estagio
 
 
 				

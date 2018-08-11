@@ -11,6 +11,19 @@
 #   default.						#
 #########################################################		
 
+################Paralizando tempo ######################
+#Procedimento para pausar o tempo simulando um movimento
+#$a0 -> Tempo em milisegundos o qual se deseja pausar
+.macro sleep(%tempo)
+	add $a0,$zero,%tempo
+	jal sleep_function
+.end_macro
+sleep_function:
+	lw $v0,32
+	syscall
+	
+	jr $ra
+
 ################ Movimentos Básicos #####################
 #### Procedimento para mover um peronagem para cima
 # $a0 -> endereço da célula contendo a posição do personagem anderior
@@ -35,9 +48,7 @@ mover_para_cima_function:
 	sw $t3,0($t4)      #Salvando a cor preta no endereço antigo
 	
 	##Dando um tempo de 0,5 segundos
-	li $v0,32
-	addi $a0,$zero,500 
-	syscall
+	sleep(500)
 	
 	addi $t0,$t0,-256 #Movendo pra cima
 	add $t2,$t2,$t0 
@@ -151,4 +162,12 @@ mover_para_esquerda_function:
 	addi $v0,$t0,0    #retornando o endereço da célula	
 	jr $ra
 
-######################Movimento dos personagens #######################
+####################### Tirando os fantasmas da caixinha ##########################
+# $a0 -> Arqugmento com o endereço da célula em que o fantasminha está
+# $a1 -> Argumento com a cor do fantasma
+.macro tirar_fantasma_caixinha(%endIni,%corFant)
+	add $a0,$zero,%endIni
+	lw  $a1, %corFant
+	jal tirar_fantasma_caixinha_function
+.end_macro
+tirar_fantasma_caixinha_function:
