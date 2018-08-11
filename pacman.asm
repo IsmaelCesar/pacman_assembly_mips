@@ -13,6 +13,7 @@
 .include "mapa.asm"
 .include "numeros.asm"
 .include "lado.asm"	
+.include "personagens.asm"
 .data
 cor:            .word 0x00000fff
 corPac:		.word 0x00f4f442
