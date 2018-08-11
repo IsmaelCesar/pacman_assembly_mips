@@ -2,29 +2,28 @@
 #                  Como rodar? 				#
 #########################################################
 # Tamanho de pixel : 8x8				#
-# Dimensï¿½o do display: 512 x 256			#
+# Dimensão do display: 512 x 256			#
 # valor ask cacacteres A = 41, S = 53, D = 44, F = 46   #
 #########################################################
-#   O mï¿½dulo principal ï¿½ o pacman, rodar ele primeiro   #
+#   O módulo principal é o pacman, rodar ele primeiro   #
 #########################################################
 #   em "settings -> memory configuration" setar valor   #
 #   default.						#
 #########################################################
-#             Outras configuraï¿½ï¿½es			#
+#             Outras configurações			#
 #########################################################
-# $s7 -> Armazenarï¿½ acor da comida, pro caso de um      #
+# $s7 -> Armazenará acor da comida, pro caso de um      #
 #        fantasma se mover sobre ela			#
-# $s6 -> Armazenarï¿½ a posiï¿½ï¿½o do pacman			#
-# $s0 -> Guardarï¿½ os pontons                            #
-# $s1,$s2,$s3,$s4 -> Guardarï¿½ a posiï¿½ï¿½o da cï¿½lula dos   #
+# $s6 -> Armazenará a posição do pacman			#
+# $s0 -> Guardará os pontons                            #
+# $s1,$s2,$s3,$s4 -> Guardará a posição da célula dos   #
 # 		     dos fantasmas no seu respectivo    #
-#		     estï¿½gio(Vermelho,Azul,Laranja,Rosa)#
+#		     estágio(Vermelho,Azul,Laranja,Rosa)#
 #########################################################		
 .include "mapa.asm"
 .include "numeros.asm"
 .include "lado.asm"	
 .include "personagens.asm"
-.include "obterTecla.asm"
 .data
 #Cores
 cor:            .word 0x00000fff
@@ -42,23 +41,23 @@ bitmap_address: .word 0x10010000
 key_board_addr: .word 0x00007f04
 bitmap_size:    .word 16384 #  512 x 256 = 131072 / 8 Tamano de Pixel = 16284 pixls
 .text	
-#Procedimento utilizado para efetuar a movimentaï¿½ï¿½o de um personagem genï¿½rico
-#$a0 -> Argumento com o endereï¿½o da posicao do personagem
-#$a1 -> Argumento com o endereï¿½o da prï¿½xima casa em que o personagem vai
+#Procedimento utilizado para efetuar a movimentação de um personagem genérico
+#$a0 -> Argumento com o endereço da posicao do personagem
+#$a1 -> Argumento com o endereço da próxima casa em que o personagem vai
 #$a2 -> Argumento com a cor do personagem a ser pintada no mapa
 pintar_movimento:
-	#Salvando argumentos em temoprï¿½rios
+	#Salvando argumentos em temoprários
 	addi $t0, $a0, 0
 	addi $t1, $a1, 0
 	addi $t2, $a2, 0
 	addi $v0, $zero, 0 #zerando retorno
-	lw   $t3, 0($t1) #Guardando em $t3 a cor contida na prï¿½xima casa que o personagem vai
-	beq  $t3, 0x000000e6, exit_cmp_1 #Verificando se ï¿½ a cor do mapa
+	lw   $t3, 0($t1) #Guardando em $t3 a cor contida na próxima casa que o personagem vai
+	beq  $t3, 0x000000e6, exit_cmp_1 #Verificando se é a cor do mapa
 			sw $zero, 0($t0) 			
 			addi $v0, $zero,31
 			addi $a0, $zero,500
 			syscall		   #espera meio segundo	
-			sw   $t2,0($t1)    #pinta o personagem na prï¿½xima casa
+			sw   $t2,0($t1)    #pinta o personagem na próxima casa
 			addi $v0, $zero, 1 #Retorno indicando que personagem se mouveu
 	exit_cmp_1:
 jr $ra
@@ -84,7 +83,7 @@ inicializar_primeiro_estagio:
 	desenhar_obstaculo(4676,1,1,corRosa,bitmap_address)
 	
 	#######################################
-	#Inicializando a posiï¿½ï¿½o dos fantasmas#
+	#Inicializando a posição dos fantasmas#
 	#######################################
 	addi $s1,$zero,4664
 	addi $s2,$zero,4668
@@ -119,7 +118,7 @@ inicializar_segundo_estagio:
 	desenhar_obstaculo(3908,1,1,corRosa,bitmap_address)
 	
 	#######################################
-	#Inicializando a posiï¿½ï¿½o dos fantasmas#
+	#Inicializando a posição dos fantasmas#
 	#######################################
 	addi $s1,$zero,3896
 	addi $s2,$zero,3900
@@ -129,14 +128,9 @@ inicializar_segundo_estagio:
 	lw $ra,0($sp)
 	addi $sp,$sp,4
 	jr $ra
-obter_direcao:
-	addi $sp,$sp,-4
-	sw   $ra, 0($sp)
-	jal obter_tecla
-andar: 
 #Prcedimento para efetuar o movimento dos fantasmas
-# $a0 -> iteraï¿½ï¿½o atual
-# $a1 -> Total de interaï¿½ï¿½es para que os fantasmas saiam da caixinha
+# $a0 -> iteração atual
+# $a1 -> Total de interações para que os fantasmas saiam da caixinha
 .macro mover_fantasmas(%iteracao,%itercaoFinal)
 	add $a0,$zero,%iteracao
 	add $a1,$zero,%itercaoFinal
@@ -149,7 +143,7 @@ mover_fantasmas_function:
 		tirar_fantasmas_caixa($a0)
 		j exit_verificar_movimentacao
 	movimentos_normais:	
-		mover_vermelho($s6,256)
+		mover_laranja($s6,256)
 	exit_verificar_movimentacao:
 	
 	get_return_address
@@ -161,7 +155,7 @@ main:
 jal inicializar_primeiro_estagio
 
 loop_estagio_1:
-	beq $s0,10,exit_loop_estagio_1
+	beq $s0,50,exit_loop_estagio_1
 		mover_fantasmas($s0,5)
 		addi $s0,$s0,1
 	j loop_estagio_1

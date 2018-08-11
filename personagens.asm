@@ -222,97 +222,6 @@ verificar_corredor_function:
 	
 	jr $ra
 
-#######################Efetuando movimento dos fantasmaas #############
-#Se o próximo movimento não for um movimento válido, o fantasma continua
-#com o movimento anterior
-# $a0 -> Arqugmento com o endereço da célula em que o fantasminha está
-# $a1 -> Argumento com a cor do fantasma
-# $a2 -> argumento com o movimento anterior do fantasma
-# $a3 -> argumento com o bitmap_address
-#########Retorna a nova posicao do fantasma##########
-# $v0 -> Retorno
-.macro mover_fantasma_corredor(%endIni,%corFant,%movAnt)
-	add $a0,$zero,%endIni
-	lw  $a1, %corFant
-	add $a2,$zero,%movAnt
-	lw  $a3,bitmap_address
-	jal mover_fantasma_corredor_function
-.end_macro
-mover_fantasma_corredor_function:
-	addi $sp,$sp,-4
-	sw   $ra,0($sp)
-	#Salvando valores em temporários
-	addi $t0,$a0,0
-	addi $t1,$a1,0
-	addi $t2,$a2,0
-	addi $t3,$a3,0
-	######################
-	add $t0,$t3,$t0 #Somando endereço base a o valor da célula
-	############## SW_CASE para verificar corredor
-	seq  $t4,$t2,4
-	seq  $t5,$t2,-4
-	or   $t6,$t4,$t4 #se o personagem estiver indo pra esquerda ou para direita
-		#Zerando registradores para reuso
-		add $t4,$zero,0				
-		add $t5,$zero,0	
-	#################################
-	beq  $t6,1,case_ir_cima_baixo
-				
-		add $t4,$t0,4
-		add $t5,$t0,-4
-		addi $sp,$sp,-20
-		sw   $t0,0($sp)
-		sw   $t1,4($sp)
-		sw   $t2,8($sp)
-		sw   $t4,12($sp)
-		sw   $t5,16($sp)
-		verificar_corredor($t4,$t5)
-		lw   $t0,0($sp)
-		lw   $t1,4($sp)
-		lw   $t2,8($sp)
-		lw   $t4,12($sp)
-		lw   $t5,16($sp)
-		addi $sp,$sp,20
-		addi $t3,$v0,0 #salvando retorno em $t3		
-		j end_switch
-	case_ir_cima_baixo:	
-		add $t4,$t0,256
-		add $t5,$t0,-256
-		addi $sp,$sp,-12
-		sw   $t0,0($sp)
-		sw   $t1,4($sp)
-		sw   $t2,8($sp)
-		#sw   $t4,12($sp)
-		#sw   $t5,16($sp)
-		verificar_corredor($t4,$t5)
-		lw   $t0,0($sp)
-		lw   $t1,4($sp)
-		lw   $t2,8($sp)
-		#lw   $t4,12($sp)
-		#lw   $t5,16($sp)
-		addi $sp,$sp,12
-		addi $t3,$v0,0 #salvando retorno em $t3
-	end_switch:
-	
-	#### SW_Case caso o personagem esteja ou não em um corredor
-	beq $t3,0,exit_case_encrusilhada
-		lw $t4,corPreta #carregando cor preta em temporário
-		sw $t4,0($t0)	
-		sleep(500)
-		addi $v0,$zero,0 #zerando retorno
-		add $t0,$t0,$t2 #Continuando moviento anterior
-		lw   $t5,0($t0)  #carregando valor da próxima célula em $t5
-		sw   $t1,0($t0)  
-		add $s7,$zero,$t5
-		addi $v0,$zero,1  #retorno inicando que personagem se moveu por um corredor
-	exit_case_encrusilhada:
-	
-
-	#############
-	lw $ra,0($sp)
-	addi $sp,$sp,4
-	jr $ra
-
 #Procedimento para verificar se o movimento atual do fantasma é um movimento válido
 # $a0 -> Endereço da célula do fantasma
 # $a1 -> Moviento que o fantasma pretende fazer
@@ -338,8 +247,8 @@ verificar_movimento_valido_function:
 	addi $t4,$zero,0x00000000 #cor preta
 	addi $t5,$zero,0x00ffffff #cor comida
 	##### Se a cor da próxima célula for preta ou vermelha
-	seq  $t6,$t4,$a2 
-	seq  $t7,$t5,$a2
+	seq  $t6,$t4,$t3 
+	seq  $t7,$t5,$t3
 	or   $t9,$t6,$t7
 	beq  $t9,0,else_movimento_valido
 		addi $v0,$zero,1 #Se for cor preta ou cor comida é um movimento válido
@@ -399,43 +308,44 @@ buscar_movimento_valido_function:
 	
 	#cima
 	macro_salva_carrega_registros_verifica_movimento			
-	bne $v0,0,buscar_movimento_para_baixo
+	beq $v0,0,buscar_movimento_para_baixo
+		addi $t2,$zero,-256
 		j exit_buscar_movimento
 	#baixo
-	buscar_movimento_para_cima:
+	buscar_movimento_para_baixo:
 	addi $t2,$zero,256
 	macro_salva_carrega_registros_verifica_movimento		
-	bne $v0,0,buscar_movimento_para_direita
-		
+	beq $v0,0,buscar_movimento_para_direita
+		addi $t2,$zero,256
 		j exit_buscar_movimento
 	#direita	
 	buscar_movimento_para_direita:
 	addi $t2,$zero,4
 	macro_salva_carrega_registros_verifica_movimento
-	bne $v0,0,buscar_movimento_para_esquerda
-
+	beq $v0,0,buscar_movimento_para_esquerda
+		addi $t2,$zero,4
 		j exit_buscar_movimento
 	#esquerda
 	buscar_movimento_para_esquerda:
 	addi $t2,$zero,-4
 	macro_salva_carrega_registros_verifica_movimento
-	
+		addi $t2,$zero,-4
 	exit_buscar_movimento:
 	addi $sp,$sp,12
 	addi $v0,$t2,0 #Salvando o tipo de incremento no retorno
 	get_return_address
 	jr $ra
-
+	
 #Procedimento para mover o fantasma vermelho Cujo endereço atual está em $s1
 # $a0 -> Argumento com o endereço inicial da célula do fantasma vermelho
 # $a1 -> Argumento com a célula com o pacman posicionado
 # $a2 -> Argumento com o movimento anterior
-.macro mover_vermelho(%endPac,%movimentoAnt) 
+.macro mover_laranja(%endPac,%movimentoAnt) 
 	add  $a0,$zero,%endPac
 	add  $a1,$zero,%movimentoAnt
-	jal  mover_vermelho_function
+	jal  mover_laranja_function
 .end_macro
-mover_vermelho_function:
+mover_laranja_function:
 	save_return_address
 	addi $t0,$a0,0 #Salvando movimento em temporário
 	addi $t1,$a1,0 #Salvando movimento em temporário
@@ -443,7 +353,7 @@ mover_vermelho_function:
 	addi $sp,$sp,-8
 	sw   $t0,0($sp)
 	sw   $t1,4($sp)
-	verificar_movimento_valido($s2,$t1)
+	verificar_movimento_valido($s3,$t1)
 	lw   $t0,0($sp)
 	lw   $t1,4($sp)
 	addi $sp,$sp,8
@@ -456,6 +366,27 @@ mover_vermelho_function:
 		addi $sp,$sp,-8
 		sw   $t0,0($sp)
 		sw   $t1,4($sp)
+		buscar_movimento_valido($s3)
+		lw   $t0,0($sp)
+		lw   $t1,4($sp)
+		addi $sp,$sp,8
+		#Direita
+		bne $v0,4,if_movimento_is_esquerda
+			mover_para_direita($s3,corLaranja)
+			j exit_if_movimento
+		#Esquerda
+		if_movimento_is_esquerda:
+		bne $v0,-4,if_movimento_is_cima
+			mover_para_esquerda($s3,corLaranja)
+			j exit_if_movimento
+		#Cima
+		if_movimento_is_cima:							
+		bne $v0,-256,if_movimento_is_baixo
+			mover_para_cima($s3,corLaranja)
+			j exit_if_movimento
+		#Baixo
+		if_movimento_is_baixo:
+			mover_para_baixo($s3,corLaranja)
 		
 	exit_if_movimento:
 	##############
