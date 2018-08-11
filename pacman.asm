@@ -166,7 +166,11 @@ loop_estagio_1:
 		addi $s0,$s0,1
 	j loop_estagio_1
 exit_loop_estagio_1:
-
+	loop_principal:
+		#jal movimentar_fantasmas
+		jal movimentaPacMan
+		#jal verificaVitoria
+	j loop_principal
 				
 addi $v0, $zero,10
 syscall
