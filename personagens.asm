@@ -214,18 +214,17 @@ mover_fantasma_function:
 	addi $t1,$a1,0
 	addi $t2,$a2,0
 	addi $t3,$a3,0
+	addi $t0,$t3,$t0 #Somando endereço base a o valor da célula
+	
 	############## SW_CASE para verificar corredor
 	seq  $t4,$t3,4
 	seq  $t5,$t3,-4
 	or   $t6,$t4,$t4 #se o personagem estiver indo pra esquerda ou para direita
-	beq  $t2,4,case_ir_cima_baixo
+	beq  $t6,1,case_ir_cima_baixo
 						
-
-	case_ir_cima_baixo:	
-	beq  $t2,-256,case_ir_baixo
-		
 		j end_switch
-	case_ir_baixo:
+	case_ir_cima_baixo:	
+			
 	
 	end_switch:
 	
