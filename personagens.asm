@@ -81,9 +81,7 @@ mover_para_baixo_function:
 	sw $t3,0($t4)      #Salvando a cor preta no endereço antigo
 	
 	##Dando um tempo de 0,5 segundos
-	li $v0,32
-	addi $a0,$zero,500 
-	syscall
+	sleep(500)
 	
 	addi $t0,$t0,256 #Movendo pra baixo
 	add $t2,$t2,$t0 
@@ -116,9 +114,7 @@ mover_para_direita_function:
 	sw $t3,0($t4)      #Salvando a cor preta no endereço antigo
 	
 	##Dando um tempo de 0,5 segundos
-	li $v0,32
-	addi $a0,$zero,500 
-	syscall
+	sleep(500)
 	
 	addi $t0,$t0,4    #Movendo pra direita
 	add  $t2,$t2,$t0 
@@ -151,9 +147,7 @@ mover_para_esquerda_function:
 	sw $t3,0($t4)      #Salvando a cor preta no endereço antigo
 	
 	##Dando um tempo de 0,5 segundos
-	li $v0,32
-	addi $a0,$zero,500 
-	syscall
+	sleep(500)
 	
 	addi $t0,$t0,-4 #Movendo pra esquerda
 	add $t2,$t2,$t0 
