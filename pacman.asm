@@ -52,27 +52,48 @@ pintar_movimento:
 	exit_cmp_1:
 jr $ra
 
-pintar_fantasmas:
+inicializar_primeiro_estagio:
 	addi $sp,$sp,-4
 	sw   $ra, 0($sp)
 	
+	jal desenhar_mapa_1
+	addi $s0, $zero,0
+	calcular_desenhar($s0) 
+	desenhar_lado(1)
+
 	desenhar_obstaculo(4664,1,1,corVernelha,bitmap_address)
 	desenhar_obstaculo(4668,1,1,corAzul,bitmap_address)
 	desenhar_obstaculo(4672,1,1,corLaranja,bitmap_address)
 	desenhar_obstaculo(4676,1,1,corRosa,bitmap_address)
-	
+
 	lw $ra,0($sp)
 	addi $sp,$sp,4
 	jr $ra
+
+inicializar_segundo_estagio:
+	addi $sp,$sp,-4
+	sw   $ra, 0($sp)
 	
+	jal desenhar_mapa_2
+	addi $s0, $zero,0
+	calcular_desenhar($s0) 
+	desenhar_lado(1)
+
+	desenhar_obstaculo(3896,1,1,corVernelha,bitmap_address)
+	desenhar_obstaculo(3900,1,1,corAzul,bitmap_address)
+	desenhar_obstaculo(3904,1,1,corLaranja,bitmap_address)
+	desenhar_obstaculo(3908,1,1,corRosa,bitmap_address)
+
+	lw $ra,0($sp)
+	addi $sp,$sp,4
+	jr $ra
+
 .globl main
 main:
 
-jal desenhar_mapa_1
-addi $s0, $zero,0
-calcular_desenhar($s0) 
-desenhar_lado(1)
-jal pintar_fantasmas
+jal inicializar_primero_estagio
+
+
 				
 addi $v0, $zero,10
 syscall
