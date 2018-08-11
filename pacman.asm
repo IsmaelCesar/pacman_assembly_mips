@@ -14,6 +14,7 @@
 .include "numeros.asm"
 .include "lado.asm"	
 .include "personagens.asm"
+.include "obterTecla.asm"
 .data
 #Cores
 cor:            .word 0x00000fff
@@ -65,6 +66,7 @@ inicializar_primeiro_estagio:
 	desenhar_obstaculo(4668,1,1,corAzul,bitmap_address)
 	desenhar_obstaculo(4672,1,1,corLaranja,bitmap_address)
 	desenhar_obstaculo(4676,1,1,corRosa,bitmap_address)
+	desenhar_obstaculo(7540,1,1,corPac,bitmap_address)
 
 	lw $ra,0($sp)
 	addi $sp,$sp,4
@@ -83,17 +85,21 @@ inicializar_segundo_estagio:
 	desenhar_obstaculo(3900,1,1,corAzul,bitmap_address)
 	desenhar_obstaculo(3904,1,1,corLaranja,bitmap_address)
 	desenhar_obstaculo(3908,1,1,corRosa,bitmap_address)
-
+	desenhar_obstaculo(7540,1,1,corPac,bitmap_address)
 	lw $ra,0($sp)
 	addi $sp,$sp,4
 	jr $ra
-
+obter_direcao:
+	addi $sp,$sp,-4
+	sw   $ra, 0($sp)
+	jal obter_tecla
+andar: 
 .globl main
 main:
-
-jal inicializar_primero_estagio
-
-
+jal inicializar_primeiro_estagio
+loop_gigante:
+	jal obter_direcao
+j loop_gigante
 				
 addi $v0, $zero,10
 syscall

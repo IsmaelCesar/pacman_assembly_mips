@@ -190,6 +190,7 @@ desenhar_vidas_function:
 	addi $sp,$sp,8
 	jr $ra	
 
+
 #Procedimento para apagar a vida do mapa
 # $a0 -> Argumento com o endereço inicial da caixinha 5x5 onde a vida está contida
 .macro apagar_vida(%endIni)
@@ -203,6 +204,7 @@ apagar_vida_function:
 	lw $ra,0($sp)
 	addi $sp,$sp,4
 	jr $ra
+
 
 ######################################################################################################
 
