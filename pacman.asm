@@ -134,6 +134,27 @@ obter_direcao:
 	sw   $ra, 0($sp)
 	jal obter_tecla
 andar: 
+#Prcedimento para efetuar o movimento dos fantasmas
+# $a0 -> itera��o atual
+# $a1 -> Total de intera��es para que os fantasmas saiam da caixinha
+.macro mover_fantasmas(%iteracao,%itercaoFinal)
+	add $a0,$zero,%iteracao
+	add $a1,$zero,%itercaoFinal
+	jal mover_fantasmas_function
+.end_macro
+mover_fantasmas_function:
+	save_return_address
+	slt $t0,$a0,$a1
+	beq  $t0,0,movimentos_normais
+		tirar_fantasmas_caixa($a0)
+		j exit_verificar_movimentacao
+	movimentos_normais:	
+		mover_vermelho($s6,256)
+	exit_verificar_movimentacao:
+	
+	get_return_address
+	jr $ra
+	
 .globl main
 main:
 
@@ -141,7 +162,7 @@ jal inicializar_primeiro_estagio
 
 loop_estagio_1:
 	beq $s0,10,exit_loop_estagio_1
-		tirar_fantasmas_caixa($s0,5)
+		mover_fantasmas($s0,5)
 		addi $s0,$s0,1
 	j loop_estagio_1
 exit_loop_estagio_1:

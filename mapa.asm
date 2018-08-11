@@ -20,6 +20,18 @@
 # 		     dos fantasmas no seu respectivo    #
 #		     estágio(Vermelho,Azul,Laranja,Rosa)#
 #########################################################
+#Macro para salvar endereço de retorno
+.macro save_return_address
+	addi $sp,$sp,-4
+	sw   $ra,0($sp)
+.end_macro
+
+#Macro para carregar endereço de retorno
+.macro get_return_address
+	lw   $ra,0($sp)
+	addi $sp,$sp,4
+.end_macro
+#########################################################
 #Procedimento para escrever linha por linha
 # $a0 -> Argumento com o endereço inicial
 # $a1 -> Argumento contendo endereço final

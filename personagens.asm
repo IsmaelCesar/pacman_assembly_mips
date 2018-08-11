@@ -188,8 +188,8 @@ mover_para_esquerda_function:
 	addi $sp,$sp,4	
 	addi $v0,$t0,0    #retornando o endereço da célula	
 	jr $ra
+##################################### Movimentação Fantasmas ##############################
 
-###############Verificar movimento válido
 #Procedimento para fazer a verificação de movimento válido de um personagem
 # $a0 -> Argumento com movimento 1
 # $a1 -> Argumento com movimento 2
@@ -312,20 +312,103 @@ mover_fantasma_corredor_function:
 	lw $ra,0($sp)
 	addi $sp,$sp,4
 	jr $ra
+
+#Procedimento para verificar se o movimento atual do fantasma é um movimento válido
+# $a0 -> Endereço da célula do fantasma
+# $a1 -> Moviento que o fantasma pretende fazer
+# $a2 -> Bitmap address
+#############Retorna #############################
+# $v0 -> Valor indicando se o movimento é válido ou não
+# $v1 -> Cor da próxima célula em que o movimento será efetuado
+.macro verificar_movimento_valido(%endFantasma,%movimentoFantasma,%corFantasma)
+	add $a0,$zero,%endFantasma
+	add $a1,$zero,%movimentoFantasma
+	lw  $a2,%corFantasma
+	lw  $a3,bitmap_address
+	jal verificar_movimento_valido_function		
+.end_macro
+verificar_movimento_valido_function:
+	#Salvando argumentos em temporários
+	addi $t0,$a0,0
+	addi $t1,$a1,0
+		
+	add $t0,$a3,$t0 #Somando endereço da célula ao endereço base
+	add  $t2,$t0,$t1 #aplicando movimento que o fantasma pretende fazer 
+	lw   $t3,0($t2)  #carregando a cor na próxima célula
 	
+	addi $t4,$zero,0x00000000 #cor preta
+	addi $t5,$zero,0x00ffffff #cor comida
+	##### Se a cor da próxima célula for preta ou vermelha
+	seq  $t6,$t4,$a2 
+	seq  $t7,$t5,$a2
+	or   $t9,$t6,$t7
+	beq  $t9,0,else_movimento_valido
+		addi $v0,$zero,1 #Se for cor preta ou cor comida é um movimento válido
+		
+		#Salvando a cor do que é que estiver na próxima célula, caso o movimento seja válido
+		beq  $t7,0,else_is_cor_comida1
+			add $v1,$zero,$t5
+			j exit_is_cor_comida1
+		else_is_cor_comida1:
+			add $v1,$zero,$t4
+		exit_is_cor_comida1:
+		
+		j exit_if_movimento_válido
+	else_movimento_valido:
+		addi $v0,$zero,0 #Caso contrario, não	
+		#Salvando a cor do que é que estiver na próxima célula, caso o movimento seja válido
+		beq  $t7,0,else_is_cor_comida2
+			add $v1,$zero,$t5
+			j exit_is_cor_comida2
+		else_is_cor_comida2:
+			add $v1,$zero,$t4
+		exit_is_cor_comida2:
+	exit_if_movimento_válido:
+	
+	jr $ra
+
+#Procedimento para mover o fantasma vermelho Cujo endereço atual está em $s1
+# $a0 -> Argumento com o endereço inicial da célula do fantasma vermelho
+# $a1 -> Argumento com a célula com o pacman posicionado
+# $a2 -> Argumento com o movimento anterior
+.macro mover_vermelho(%endPac,%movimentoAnt) 
+	add  $a0,$zero,%endPac
+	add  $a1,$zero,%movimentoAnt
+	jal  mover_vermelho_function
+.end_macro
+mover_vermelho_function:
+	save_return_address
+	addi $t0,$a0,0 #Salvando movimento em temporário
+	addi $t1,$a1,0 #Salvando movimento em temporário
+	##############
+	addi $sp,$sp,-8
+	sw   $t0,0($sp)
+	sw   $t1,4($sp)
+	verificar_movimento_valido($s2,$t1,corVernelha)
+	lw   $t0,0($sp)
+	lw   $t1,4($sp)
+	addi $sp,$sp,8
+	
+	bne $v0,1,else_movimento
+		#caso seja um movimento válido
+		#verificar se está num corredor
+	else_movimento:
+	##############
+	get_return_address
+	jr $ra
+
 #######O primeiro movimento dos fantasmas sempre será sair da caixinha
 #Será um procedimento para cada mapa.
 # $a0 -> argumento contendo a iteração atual. Caso seja a primeira iteração
 #        Os fantasmas farão um movimento específico
 # $a1 -> Argumento contendo a quantidade de movimentos iniciais que os fantasmas tem que fazer
-.macro tirar_fantasmas_caixa(%iteracao,%qtdMovIni)
+.macro tirar_fantasmas_caixa(%iteracao)
 	add $a0,$zero,%iteracao
-	add $a1,$zero,%qtdMovIni
+	#add $a1,$zero,%qtdMovIni ,%qtdMovIni
 	jal tirar_fantasmas_caixa_function
 .end_macro
 tirar_fantasmas_caixa_function:	
-	addi $sp,$sp,-4
-	sw   $ra,0($sp)
+	save_return_address
 	############## Se $a0 for igual a 0, então está na primeira iteração
 	bne  $a0,0,exit_is_primeira_iteracao
 		mover_para_cima($s2,corAzul)
@@ -338,8 +421,6 @@ tirar_fantasmas_caixa_function:
 		addi $s4,$v0,0   #Salvando posição atualizada do pacman
 		j exit_primeiros_movimento
 	exit_is_primeira_iteracao:
-	slt $t0,$a0,$a1
-	beq  $t0,0,exit_primeiros_movimento
 		mover_para_cima($s2,corAzul)
 		addi $s2,$v0,0   #Salvando posição atual do fantasma
 		mover_para_cima($s3,corLaranja)
@@ -350,6 +431,5 @@ tirar_fantasmas_caixa_function:
 		addi $s4,$v0,0   #Salvando posição atualizada do pacman
 	exit_primeiros_movimento:
 	#############
-	lw $ra,0($sp)
-	addi $sp,$sp,4
+	get_return_address
 	jr $ra
