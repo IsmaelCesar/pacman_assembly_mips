@@ -277,8 +277,106 @@ calcular_desenhar_function:
 	lw   $a0,4($sp)
 	addi $a1,$zero,100
 	funcao_modulo_expoente($a0,$a1)	
-	desenhar_numero($v0,3996,corPac,bitmap_address)
+	desenhar_numero($v0,4000,corPac,bitmap_address)
 	
 	lw $ra,0($sp)
 	addi $sp, $sp,8
+	jr $ra
+
+##PRocedimento para apagar o número
+# $a0 -> Endereço do número que se deseja apagar
+.macro apagar_numero(%endIni)	
+	add $a0,$zero,%endIni
+	jal apagar_numero_function
+.end_macro
+apagar_numero_function:
+	save_return_address
+	add $t0,$0,$a0
+	########Acha_inicio############
+	addi $t1, $t0, 4
+	addi $t2, $t0, 256
+	addi $t3, $t0, 272
+	addi $t4, $t0, 1280
+	addi $t5, $t0, 1296
+	addi $t6, $t0, 2052
+	addi $t7, $t0, 1028
+	###############################
+	addi $t0, $t1, 12 
+	desenhar_linha($t1,$t0, corPreta,bitmap_address) #linha 1
+	addi $t0, $t2, 768
+	desenhar_coluna($t2, $t0, corPreta, bitmap_address) #linha 2
+	addi $t0, $t3, 768
+	desenhar_coluna($t3,$t0,corPreta, bitmap_address) #linha 3
+	addi $t0, $t4, 768
+	desenhar_coluna($t4,$t0,corPreta, bitmap_address) #linha 3
+	addi $t0, $t5, 768
+	desenhar_coluna($t5,$t0,corPreta, bitmap_address) #linha 3
+	addi $t0, $t6, 12 
+	desenhar_linha($t6,$t0, corPreta,bitmap_address) #linha 1	
+	addi $t0, $t7, 12 
+	desenhar_linha($t7,$t0, corPreta,bitmap_address) #linha 1	
+		
+	get_return_address
+	jr $ra
+#Procedimento feito para incrementar pontos
+# Os endereços dos dígitos variam de 28 em 28, sendo o endereços 
+#dos mesmos, subtraidos no mesmo intervalo
+# $a0 -> Pontos atuais
+# Macro auxiliar para salvar os regsitrso de ativação
+.macro salvar_registros_incrementar_pontos
+	addi  $sp,$sp,-20
+	sw     $t0,0($sp)
+	sw     $t1,4($sp)
+	sw     $t2,8($sp)
+	sw     $t4,12($sp)
+	sw     $t6,16($sp)
+.end_macro
+# Macro auxiliar para pegar os regsitrso de ativação
+.macro get_registros_incrementar_pontos
+	lw     $t0,0($sp)
+	lw     $t1,4($sp)
+	lw     $t2,8($sp)
+	lw     $t4,12($sp)
+	lw     $t6,16($sp)
+	addi  $sp,$sp,20
+.end_macro
+incrementar_pontos:
+	save_return_address
+	
+	addi $t0,$zero,1   #Salvando expoente
+	add  $t1,$zero,$s0 #Salvando valores dos pontos em temporário
+	addi $t2,$zero,0   #contador do loop
+	addi $s0,$s0,1     #incrementando pontos
+	#funcao_modulo_expoente(,)
+	addi $t6,$zero,4056	
+	loop_incrementar_pontos:
+	slti $t3,$t2,3
+	beq $t3,0,exit_loop_incrementar_pontos
+		
+		funcao_modulo_expoente($s0,$t0)
+		addi $t4,$v0,0
+		
+		funcao_modulo_expoente($t1,$t0)
+		#Se o digito do numero antigo for igual ao novo
+		seq $t5,$t4,$v0
+		beq $t5,1,exit_is_digito_igual
+			salvar_registros_incrementar_pontos
+			apagar_numero($t6)
+			
+			get_registros_incrementar_pontos
+			salvar_registros_incrementar_pontos
+			
+			desenhar_numero($t4,$t6,corPac,bitmap_address)
+			
+			get_registros_incrementar_pontos
+		exit_is_digito_igual:
+		
+		addi $t6,$t6,-28
+		mul  $t0,$t0,10
+		addi $t2,$t2,1
+		j loop_incrementar_pontos
+	exit_loop_incrementar_pontos:
+	
+	
+	get_return_address
 	jr $ra

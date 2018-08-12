@@ -24,6 +24,7 @@
 .include "numeros.asm"
 .include "lado.asm"	
 .include "personagens.asm"
+.include "movimentos_pacman.asm"
 .data
 #Cores
 cor:            .word 0x00000fff
@@ -39,36 +40,16 @@ cor_mapa:       .word 0x000000e6
 movimentos:     .space 16 #0 -> Vermelho, 4 -> Azul, 8 -> Laranja, 12 -> Rosa
 vidas:          .word 3  	#Quantidade de vidas
 bitmap_address: .word 0x10010000
-key_board_addr: .word 0x00007f04
+key_board_addr: .word 0xffff0004
 bitmap_size:    .word 16384 #  512 x 256 = 131072 / 8 Tamano de Pixel = 16284 pixls
 .text	
-#Procedimento utilizado para efetuar a movimentação de um personagem genérico
-#$a0 -> Argumento com o endereço da posicao do personagem
-#$a1 -> Argumento com o endereço da próxima casa em que o personagem vai
-#$a2 -> Argumento com a cor do personagem a ser pintada no mapa
-pintar_movimento:
-	#Salvando argumentos em temoprários
-	addi $t0, $a0, 0
-	addi $t1, $a1, 0
-	addi $t2, $a2, 0
-	addi $v0, $zero, 0 #zerando retorno
-	lw   $t3, 0($t1) #Guardando em $t3 a cor contida na próxima casa que o personagem vai
-	beq  $t3, 0x000000e6, exit_cmp_1 #Verificando se é a cor do mapa
-			sw $zero, 0($t0) 			
-			addi $v0, $zero,31
-			addi $a0, $zero,500
-			syscall		   #espera meio segundo	
-			sw   $t2,0($t1)    #pinta o personagem na próxima casa
-			addi $v0, $zero, 1 #Retorno indicando que personagem se mouveu
-	exit_cmp_1:
-jr $ra
 
 inicializar_primeiro_estagio:
 	addi $sp,$sp,-4
 	sw   $ra, 0($sp)
 	
 	jal desenhar_mapa_1
-	addi $s0, $zero,0
+	addi $s0, $zero,8
 	calcular_desenhar($s0) 
 	desenhar_lado(1)
 	#Desenhando pacman (Para testes)
@@ -76,7 +57,7 @@ inicializar_primeiro_estagio:
 	lw $t1,bitmap_address
 	addi $t1,$t1,5184
 	sw $t0,0($t1)
-	add $s6,$zero,$t1
+	addi $s6,$zero,5184
 	#################
 	desenhar_obstaculo(4664,1,1,corVernelha,bitmap_address)
 	desenhar_obstaculo(4668,1,1,corAzul,bitmap_address)
@@ -100,7 +81,7 @@ inicializar_segundo_estagio:
 	sw   $ra, 0($sp)
 	
 	jal desenhar_mapa_2
-	addi $s0, $zero,0
+	addi $s0, $zero,8
 	calcular_desenhar($s0) 
 	desenhar_lado(2)
 	
@@ -110,7 +91,7 @@ inicializar_segundo_estagio:
 	lw $t1,bitmap_address
 	addi $t1,$t1,4416
 	sw $t0,0($t1)
-	add $s6,$zero,$t1
+	addi $s6,$zero,4416
 	#################
 
 	desenhar_obstaculo(3896,1,1,corVernelha,bitmap_address)
@@ -168,12 +149,15 @@ sw  $t2,12($t1)
 
 jal inicializar_primeiro_estagio
 
-loop_estagio_1:
-	beq $s0,50,exit_loop_estagio_1
-		mover_fantasmas($s0,5)
-		addi $s0,$s0,1
-	j loop_estagio_1
-exit_loop_estagio_1:
+jal incrementar_pontos
+
+#loop_estagio_1:
+	#beq $s0,50,exit_loop_estagio_1
+		#mover_fantasmas($s0,5)
+		#mover_pacman
+		#addi $s0,$s0,1
+#j loop_estagio_1
+#exit_loop_estagio_1:
 
 				
 addi $v0, $zero,10

@@ -273,9 +273,9 @@ verificar_corredor_function:
 #############Retorna #############################
 # $v0 -> Valor indicando se o movimento é válido ou não
 # $v1 -> Cor da próxima célula em que o movimento será efetuado
-.macro verificar_movimento_valido(%endFantasma,%movimentoFantasma)
-	add $a0,$zero,%endFantasma
-	add $a1,$zero,%movimentoFantasma
+.macro verificar_movimento_valido(%endPersonagem,%movimentoPersonagem)
+	add $a0,$zero,%endPersonagem
+	add $a1,$zero,%movimentoPersonagem
 	lw  $a3,bitmap_address
 	jal verificar_movimento_valido_function		
 .end_macro
