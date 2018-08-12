@@ -25,7 +25,6 @@
 .include "numeros.asm"
 .include "lado.asm"	
 .include "personagens.asm"
-.include "obterTecla.asm"
 .data
 #Cores
 cor:            .word 0x00000fff
@@ -151,7 +150,7 @@ mover_fantasmas_function:
 		tirar_fantasmas_caixa($a0)
 		j exit_verificar_movimentacao
 	movimentos_normais:	
-		mover_vermelho($s6,256)
+		mover_laranja($s6,256)
 	exit_verificar_movimentacao:
 	
 	get_return_address
@@ -163,7 +162,7 @@ main:
 jal inicializar_primeiro_estagio
 
 loop_estagio_1:
-	beq $s0,10,exit_loop_estagio_1
+	beq $s0,50,exit_loop_estagio_1
 		mover_fantasmas($s0,5)
 		addi $s0,$s0,1
 	j loop_estagio_1
