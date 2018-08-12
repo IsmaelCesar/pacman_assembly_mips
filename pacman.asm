@@ -37,6 +37,7 @@ corPreta:       .word 0x00000000
 corComida:      .word 0x00ffffff	
 cor_mapa:       .word 0x000000e6
 #################################
+movimentos:     .space 16 #0 -> Vermelho, 4 -> Azul, 8 -> Laranja, 12 -> Rosa
 vidas:          .word 3  	#Quantidade de vidas
 bitmap_address: .word 0x10010000
 key_board_addr: .word 0x00007f04
@@ -149,8 +150,11 @@ mover_fantasmas_function:
 	beq  $t0,0,movimentos_normais
 		tirar_fantasmas_caixa($a0)
 		j exit_verificar_movimentacao
-	movimentos_normais:	
-		mover_laranja($s6,256)
+	movimentos_normais:
+		#movimentos laranja	
+		carregar_movimento_laranja($t1)
+		mover_laranja($t1)
+		salvar_movimento_laranja($v0)
 	exit_verificar_movimentacao:
 	
 	get_return_address
@@ -158,6 +162,14 @@ mover_fantasmas_function:
 	
 .globl main
 main:
+#Salvando movimentos iniciais
+la $t1,movimentos
+addi $t2,$zero,-256
+sw  $t2,0($t1)
+sw  $t2,4($t1)
+sw  $t2,8($t1)
+sw  $t2,12($t1)
+
 
 jal inicializar_primeiro_estagio
 
