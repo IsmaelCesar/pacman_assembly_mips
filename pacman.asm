@@ -25,6 +25,7 @@
 .include "numeros.asm"
 .include "lado.asm"	
 .include "personagens.asm"
+.include "obterTecla.asm"
 .data
 #Cores
 cor:            .word 0x00000fff
@@ -77,7 +78,7 @@ inicializar_primeiro_estagio:
 	lw $t1,bitmap_address
 	addi $t1,$t1,5184
 	sw $t0,0($t1)
-	add $s6,$zero,$t1
+	addi $s6,$zero,5184
 	#################
 	desenhar_obstaculo(4664,1,1,corVernelha,bitmap_address)
 	desenhar_obstaculo(4668,1,1,corAzul,bitmap_address)
@@ -173,11 +174,10 @@ sw  $t2,12($t1)
 
 jal inicializar_primeiro_estagio
 
-loop_estagio_1:
-	beq $s0,50,exit_loop_estagio_1
-		mover_fantasmas($s0,5)
-		addi $s0,$s0,1
-	j loop_estagio_1
+#loop_estagio_1:
+#	beq $s0,50,exit_loop_estagio_1
+#		mover_fantasmas($s0,5)
+#	j loop_estagio_1
 exit_loop_estagio_1:
 	loop_principal:
 		#jal movimentar_fantasmas

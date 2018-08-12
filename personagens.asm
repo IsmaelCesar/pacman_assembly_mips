@@ -305,7 +305,7 @@ verificar_movimento_valido_function:
 			add $v1,$zero,$t4
 		exit_is_cor_comida1:
 		
-		j exit_if_movimento_v�lido
+		j exit_if_movimento_valido
 	else_movimento_valido:
 		addi $v0,$zero,0 #Caso contrario, n�o	
 		#Salvando a cor do que � que estiver na pr�xima c�lula, caso o movimento seja v�lido
@@ -315,7 +315,7 @@ verificar_movimento_valido_function:
 		else_is_cor_comida2:
 			add $v1,$zero,$t4
 		exit_is_cor_comida2:
-	exit_if_movimento_v�lido:
+	exit_if_movimento_valido:
 	
 	jr $ra
 	

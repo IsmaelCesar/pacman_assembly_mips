@@ -10,7 +10,6 @@
 .end_macro
 
 obter_tecla:
-	li $v0, 0x00000061
 	sw $v0, 0xFFFF0004
 	lw $t0 0xFFFF0004		
 obter_tecla_direita:
@@ -27,6 +26,7 @@ obter_tecla_voltar:
 
 praEsquerda: 
 	mover_para_esquerda($s6,corPac)
+	addi $s6,$v0,0   #Salvando posi��o atualizada do pacman		
 	lw $ra,0($sp)
 	addi $sp,$sp,4
 	jr $ra
