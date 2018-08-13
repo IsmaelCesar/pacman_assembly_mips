@@ -143,9 +143,10 @@ loop_jogo:
 		#mover_fantasmas($s0,5)
 			mover_pacman(1)
 		#addi $s0,$s0,1
+		addi $s0,$s0,1
 		j loop_estagio_1
 	exit_loop_estagio_1:
-
+	
 	jal flush_mapa
 	#Apaga_os numeros
 	apagar_numero(4056)
