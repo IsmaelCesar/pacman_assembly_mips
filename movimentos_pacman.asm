@@ -75,7 +75,7 @@
 	 	
  		bne $v0,1,exit_sw_case_movimento_pac
  			
- 			salvar_registros_mover_pacman
+ 			
 	 		############################################
 	 		#Espelhando movimento			  #
 	 		#movimento espelhado dos cantos do MAPA
@@ -98,7 +98,7 @@
 	 				j exit_verificar_estagio_direita
 	 			verificar_segunda_saida_direita:
 	 			bne  $t6,3964,exit_verificar_estagio_direita
-	 				add $t6,$t2,$s6 #Salvando o bitmap address ao enredeço da celula
+	 				add $t6,$t2,$zero #Salvando o bitmap address ao enredeço da celula
 	 				lw  $t7,corPreta 
 	 				sw $t7,0($t6)
 	 				addi $s6,$zero,3840
@@ -106,11 +106,10 @@
  		
  			#Carrega a cor da próxima célula a qual o pacman vai se mover
  			addi $t2,$t2,4
- 			lw   $t3,0($t2) 		
-	 		
+ 			lw   $t3,0($t2) 			 		
+ 			salvar_registros_mover_pacman
 	 		mover_para_direita($s6,corPac)
-	 		addi $s6,$v0,0
-	 		
+	 		addi $s6,$v0,0	 		
 	 		get_registros_mover_pacman
 	 		verificar_incremento_de_pontos($t3)
 				
