@@ -441,3 +441,6 @@ sw   $ra,0($sp)
 	lw $ra, 0($sp)
 	addi $sp,$sp,4
 	jr $ra
+
+flush_mapa:
+	desenhar_obstaculo(260,30,30,corPreta, bitmap_address)

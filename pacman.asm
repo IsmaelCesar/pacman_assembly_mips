@@ -49,7 +49,7 @@ inicializar_primeiro_estagio:
 	sw   $ra, 0($sp)
 	
 	jal desenhar_mapa_1
-	addi $s0, $zero,8
+	addi $s0, $zero,0
 	calcular_desenhar($s0) 
 	desenhar_lado(1)
 	#Desenhando pacman (Para testes)
@@ -81,7 +81,7 @@ inicializar_segundo_estagio:
 	sw   $ra, 0($sp)
 	
 	jal desenhar_mapa_2
-	addi $s0, $zero,8
+	addi $s0, $zero,0
 	calcular_desenhar($s0) 
 	desenhar_lado(2)
 	
@@ -147,18 +147,32 @@ sw  $t2,8($t1)
 sw  $t2,12($t1)
 
 
-jal inicializar_primeiro_estagio
+	jal inicializar_primeiro_estagio
 
-jal incrementar_pontos
-
-#loop_estagio_1:
-	#beq $s0,50,exit_loop_estagio_1
+	loop_estagio_1:
+		beq $s0,10,exit_loop_estagio_1
 		#mover_fantasmas($s0,5)
-		#mover_pacman
+			mover_pacman
 		#addi $s0,$s0,1
-#j loop_estagio_1
-#exit_loop_estagio_1:
+		j loop_estagio_1
+	exit_loop_estagio_1:
 
+	jal flush_mapa
+	#Apaga_os numeros
+	apagar_numero(4056)
+	apagar_numero(4028)
+	apagar_numero(4000)
+	
+	jal inicializar_segundo_estagio
+	
+	
+	loop_estagio_2:
+		beq $s0,50,exit_loop_estagio_2
+		#mover_fantasmas($s0,5)
+			mover_pacman
+		#addi $s0,$s0,1
+		j loop_estagio_2
+	exit_loop_estagio_2:
 				
 addi $v0, $zero,10
 syscall
