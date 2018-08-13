@@ -2,28 +2,30 @@
 #                  Como rodar? 				#
 #########################################################
 # Tamanho de pixel : 8x8				#
-# Dimensão do display: 512 x 256			#
+# Dimensï¿½o do display: 512 x 256			#
 # valor ask cacacteres A = 41, S = 53, D = 44, F = 46   #
 #########################################################
-#   O módulo principal é o pacman, rodar ele primeiro   #
+#   O mï¿½dulo principal ï¿½ o pacman, rodar ele primeiro   #
 #########################################################
 #   em "settings -> memory configuration" setar valor   #
 #   default.						#
 #########################################################
-#             Outras configurações			#
+#             Outras configuraï¿½ï¿½es			#
 #########################################################
-# $s7 -> Armazenará acor da comida, pro caso de um      #
+# $s7 -> Armazenarï¿½ acor da comida, pro caso de um      #
 #        fantasma se mover sobre ela			#
-# $s6 -> Armazenará a posição do pacman			#
-# $s0 -> Guardará os pontons                            #
-# $s1,$s2,$s3,$s4 -> Guardará a posição da célula dos   #
+# $s6 -> Armazenarï¿½ a posiï¿½ï¿½o do pacman			#
+# $s0 -> Guardarï¿½ os pontons                            #
+# $s1,$s2,$s3,$s4 -> Guardarï¿½ a posiï¿½ï¿½o da cï¿½lula dos   #
 # 		     dos fantasmas no seu respectivo    #
-#		     estágio(Vermelho,Azul,Laranja,Rosa)#
+#		     estï¿½gio(Vermelho,Azul,Laranja,Rosa)
+#	$s5 -> armazena a tecla
 #########################################################		
 .include "mapa.asm"
 .include "numeros.asm"
 .include "lado.asm"	
 .include "personagens.asm"
+.include "obterTecla.asm"
 .include "movimentos_pacman.asm"
 .data
 #Cores
@@ -65,7 +67,7 @@ inicializar_primeiro_estagio:
 	desenhar_obstaculo(4676,1,1,corRosa,bitmap_address)
 	
 	#######################################
-	#Inicializando a posição dos fantasmas#
+	#Inicializando a posiï¿½ï¿½o dos fantasmas#
 	#######################################
 	addi $s1,$zero,4664
 	addi $s2,$zero,4668
@@ -100,7 +102,7 @@ inicializar_segundo_estagio:
 	desenhar_obstaculo(3908,1,1,corRosa,bitmap_address)
 	
 	#######################################
-	#Inicializando a posição dos fantasmas#
+	#Inicializando a posiï¿½ï¿½o dos fantasmas#
 	#######################################
 	addi $s1,$zero,3896
 	addi $s2,$zero,3900
@@ -110,11 +112,15 @@ inicializar_segundo_estagio:
 	lw $ra,0($sp)
 	addi $sp,$sp,4
 	jr $ra
+obter_direcao:
+	addi $sp,$sp,-4
+	sw   $ra, 0($sp)
+	jal obter_tecla
 	
-	
+andar: 
 #Prcedimento para efetuar o movimento dos fantasmas
-# $a0 -> iteração atual
-# $a1 -> Total de interações para que os fantasmas saiam da caixinha
+# $a0 -> iteraï¿½ï¿½o atual
+# $a1 -> Total de interaï¿½ï¿½es para que os fantasmas saiam da caixinha
 .macro mover_fantasmas(%iteracao,%itercaoFinal)
 	add $a0,$zero,%iteracao
 	add $a1,$zero,%itercaoFinal
@@ -149,30 +155,13 @@ sw  $t2,12($t1)
 
 	jal inicializar_primeiro_estagio
 
-	loop_estagio_1:
-		beq $s0,20,exit_loop_estagio_1
-		#mover_fantasmas($s0,5)
-			mover_pacman(1)
-		#addi $s0,$s0,1
-		j loop_estagio_1
-	exit_loop_estagio_1:
+loop_estagio_1:
+	beq $s0,50,exit_loop_estagio_1
+		mover_fantasmas($s0,5)
+		addi $s0,$s0,1
+	j loop_estagio_1
+exit_loop_estagio_1:
 
-	jal flush_mapa
-	#Apaga_os numeros
-	apagar_numero(4056)
-	apagar_numero(4028)
-	apagar_numero(4000)
-	apagar_numero(732)
-	jal inicializar_segundo_estagio
-	
-	
-	loop_estagio_2:
-		beq $s0,20,exit_loop_estagio_2
-		#mover_fantasmas($s0,5)
-			mover_pacman(2)
-		#addi $s0,$s0,1
-		j loop_estagio_2
-	exit_loop_estagio_2:
 				
 addi $v0, $zero,10
 syscall
