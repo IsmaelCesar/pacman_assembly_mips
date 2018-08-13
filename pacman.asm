@@ -10,7 +10,7 @@
 #   em "settings -> memory configuration" setar valor   #
 #   default.						#
 #########################################################
-#             Outras configura��es			#
+#             Outras configura��es	teste           #
 #########################################################
 # $s7 -> Armazenar� acor da comida, pro caso de um      #
 #        fantasma se mover sobre ela			#
