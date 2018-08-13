@@ -150,9 +150,9 @@ sw  $t2,12($t1)
 	jal inicializar_primeiro_estagio
 
 	loop_estagio_1:
-		beq $s0,10,exit_loop_estagio_1
+		beq $s0,20,exit_loop_estagio_1
 		#mover_fantasmas($s0,5)
-			mover_pacman
+			mover_pacman(1)
 		#addi $s0,$s0,1
 		j loop_estagio_1
 	exit_loop_estagio_1:
@@ -162,14 +162,14 @@ sw  $t2,12($t1)
 	apagar_numero(4056)
 	apagar_numero(4028)
 	apagar_numero(4000)
-	
+	apagar_numero(732)
 	jal inicializar_segundo_estagio
 	
 	
 	loop_estagio_2:
-		beq $s0,50,exit_loop_estagio_2
+		beq $s0,20,exit_loop_estagio_2
 		#mover_fantasmas($s0,5)
-			mover_pacman
+			mover_pacman(2)
 		#addi $s0,$s0,1
 		j loop_estagio_2
 	exit_loop_estagio_2:

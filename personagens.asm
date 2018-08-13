@@ -101,7 +101,7 @@ mover_para_cima_function:
 	lw   $t3, corPreta #Carregando cor preta no registrador	
 
 	##Dando um tempo de 0,5 segundos
-	sleep(500)
+	sleep(200)
 	
 	add $t4,$a2,$t0    #Carregando endereço da célula junto com o base em $t4
 	sw $t3,0($t4)      #Salvando a cor preta no endereço antigo
@@ -140,7 +140,7 @@ mover_para_baixo_function:
 	lw   $t3, corPreta #Carregando cor preta no registrador	
 
 	##Dando um tempo de 0,5 segundos
-	sleep(500)
+	sleep(200)
 	
 	add $t4,$a2,$t0    #Carregando endereço da célula junto com o base em $t4
 	sw $t3,0($t4)      #Salvando a cor preta no endereço antigo
@@ -179,7 +179,7 @@ mover_para_direita_function:
 	lw   $t3, corPreta #Carregando cor preta no registrador	
 
 	##Dando um tempo de 0,5 segundos
-	sleep(500)
+	sleep(200)
 
 	add $t4,$a2,$t0    #Carregando endereço da célula junto com o base em $t4
 	sw $t3,0($t4)      #Salvando a cor preta no endereço antigo
@@ -218,7 +218,7 @@ mover_para_esquerda_function:
 	lw   $t3, corPreta #Carregando cor preta no registrador	
 
 	##Dando um tempo de 0,5 segundos
-	sleep(500)
+	sleep(200)
 		
 	add $t4,$a2,$t0    #Carregando endereço da célula junto com o base em $t4
 	sw $t3,0($t4)      #Salvando a cor preta no endereço antigo

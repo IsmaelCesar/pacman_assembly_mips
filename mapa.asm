@@ -443,4 +443,7 @@ sw   $ra,0($sp)
 	jr $ra
 
 flush_mapa:
+	save_return_address
 	desenhar_obstaculo(260,30,30,corPreta, bitmap_address)
+	get_return_address
+	jr $ra
