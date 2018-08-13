@@ -163,6 +163,7 @@ sw  $t2,12($t1)
 	apagar_numero(4028)
 	apagar_numero(4000)
 	apagar_numero(732)
+	move $s0, $zero #zerando pontuacao para passar para o proximo estagio
 	jal inicializar_segundo_estagio
 	
 	
