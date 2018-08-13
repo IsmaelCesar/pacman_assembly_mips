@@ -111,27 +111,16 @@ inicializar_segundo_estagio:
 	addi $sp,$sp,4
 	jr $ra
 	
+
+flush_estagio:
+	save_return_address	
 	
-#Prcedimento para efetuar o movimento dos fantasmas
-# $a0 -> iteração atual
-# $a1 -> Total de interações para que os fantasmas saiam da caixinha
-.macro mover_fantasmas(%iteracao,%itercaoFinal)
-	add $a0,$zero,%iteracao
-	add $a1,$zero,%itercaoFinal
-	jal mover_fantasmas_function
-.end_macro
-mover_fantasmas_function:
-	save_return_address
-	slt $t0,$a0,$a1
-	beq  $t0,0,movimentos_normais
-		tirar_fantasmas_caixa($a0)
-		j exit_verificar_movimentacao
-	movimentos_normais:
-		#movimentos laranja	
-		carregar_movimento_laranja($t1)
-		mover_laranja($t1)
-		salvar_movimento_laranja($v0)
-	exit_verificar_movimentacao:
+	jal flush_mapa
+	#Apaga_os numeros
+	apagar_numero(4056)
+	apagar_numero(4028)
+	apagar_numero(4000)
+	apagar_numero(732)
 	
 	get_return_address
 	jr $ra
@@ -146,7 +135,7 @@ sw  $t2,4($t1)
 sw  $t2,8($t1)
 sw  $t2,12($t1)
 
-
+loop_jogo:
 	jal inicializar_primeiro_estagio
 
 	loop_estagio_1:
@@ -157,12 +146,9 @@ sw  $t2,12($t1)
 		j loop_estagio_1
 	exit_loop_estagio_1:
 
-	jal flush_mapa
-	#Apaga_os numeros
-	apagar_numero(4056)
-	apagar_numero(4028)
-	apagar_numero(4000)
-	apagar_numero(732)
+	
+	jal flush_estagio
+	
 	jal inicializar_segundo_estagio
 	
 	
@@ -173,6 +159,10 @@ sw  $t2,12($t1)
 		#addi $s0,$s0,1
 		j loop_estagio_2
 	exit_loop_estagio_2:
-				
+	
+	jal flush_estagio
+		
+ j loop_jogo
+ 		
 addi $v0, $zero,10
 syscall
