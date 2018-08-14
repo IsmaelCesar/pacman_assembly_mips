@@ -101,13 +101,14 @@ mover_para_cima_function:
 	lw   $t3, corPreta #Carregando cor preta no registrador	
 
 	##Dando um tempo de 0,5 segundos
-	sleep(200)
+	sleep(100)
 	
 	add $t4,$a2,$t0    #Carregando endere�o da c�lula junto com o base em $t4
 	sw $t3,0($t4)      #Salvando a cor preta no endere�o antigo
 		
 	addi $t0,$t0,-256 #Movendo pra cima
-	add $t2,$t2,$t0 
+	add $t2,$t2,$t0
+	lw  $t7, 0 ($t2) #carrega o valor que estava antes 
 	sw   $t1,0($t2)
 	
 	###############
@@ -140,7 +141,7 @@ mover_para_baixo_function:
 	lw   $t3, corPreta #Carregando cor preta no registrador	
 
 	##Dando um tempo de 0,5 segundos
-	sleep(200)
+	sleep(100)
 	
 	add $t4,$a2,$t0    #Carregando endere�o da c�lula junto com o base em $t4
 	sw $t3,0($t4)      #Salvando a cor preta no endere�o antigo
@@ -179,7 +180,7 @@ mover_para_direita_function:
 	lw   $t3, corPreta #Carregando cor preta no registrador	
 
 	##Dando um tempo de 0,5 segundos
-	sleep(200)
+	sleep(100)
 
 	add $t4,$a2,$t0    #Carregando endere�o da c�lula junto com o base em $t4
 	sw $t3,0($t4)      #Salvando a cor preta no endere�o antigo
@@ -218,7 +219,7 @@ mover_para_esquerda_function:
 	lw   $t3, corPreta #Carregando cor preta no registrador	
 
 	##Dando um tempo de 0,5 segundos
-	sleep(200)
+	sleep(100)
 		
 	add $t4,$a2,$t0    #Carregando endere�o da c�lula junto com o base em $t4
 	sw $t3,0($t4)      #Salvando a cor preta no endere�o antigo

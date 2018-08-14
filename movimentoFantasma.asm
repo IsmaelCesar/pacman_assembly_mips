@@ -1,3 +1,10 @@
+.macro gerarNumero
+	li $v0, 42
+	li $a0, 0
+	li $a1, 3
+	syscall
+	move $v0, $a0
+.end_macro	 
 #Coloca em $vo se o fantasma está dentro da caixa
 # $v0 é 1 quando está
 # $v0 é 0  se não está
@@ -11,7 +18,7 @@
 .end_macro
 
 dentroDaCaixaM1_function:
- 
+ 	save_return_address
 	loop_linha:
 		beq $t3, 3, soma
 		beq $a0, $t1, esta
@@ -46,6 +53,7 @@ sair:
 .end_macro
 verificandoMovimento_function:
 	save_return_address
+aqui:	
 	beq $a1, 0, esquerda
 	beq $a1, 1, direita
 	beq $a1, 2, cima
@@ -83,19 +91,18 @@ baixo:
 	get_return_address
 	jr $ra
 naoPode:
-	addi $a1, $a1, 1
-	j verificandoMovimento_function
+	move $t9, $a0
+	gerarNumero
+	move $a0, $t9
+	move $a1, $v0
+	j aqui
 naoPodeBaixo:
-	move $a1, $0
-	j verificandoMovimento_function
+	move $t9, $a0
+	gerarNumero
+	move $a0, $t9
+	move $a1, $v0
+	j aqui
 
-.macro gerarNumero
-	li $v0, 42
-	li $a0, 0
-	li $a1, 3
-	syscall
-	move $v0, $a0
-.end_macro	 
 # $s3 é o laranja
 .macro movimento_laranja(%mapa)
 	addi $a0, $0, %mapa
@@ -113,32 +120,27 @@ sairDaCaixaM1:
 	get_return_address
 	jr $ra
  movendoLaranja:
- 	#gerarNumero
- 	addi $v0, $0, 2
+ 	gerarNumero
  	verificandoMovimento($s3, $v0, cor_mapa)
  	beq $v0, 0, moverEsquerdaLaranja
  	beq $v0, 1, moverDireitaLaranja
  	beq $v0, 2, moverCimaLaranja
  	beq $v0, 3, moverBaixoLaranja
  moverEsquerdaLaranja:
- 	move $t0, $0
+ 	move $t0, $0 
  	mover_para_esquerda($s3,corLaranja)
- 	move $s3, $v0
  	j sair2
  moverDireitaLaranja:
- 	move $t0, $0
+ 	 move $t0, $0
  	mover_para_direita($s3,corLaranja)
- 	move $s3, $v0
  	j sair2
  moverCimaLaranja:
- 	move $t0, $0
+ 	 move $t0, $0
  	mover_para_cima($s3,corLaranja)
- 	move $s3, $v0
  	j sair2
  moverBaixoLaranja:
  	move $t0, $0
  	mover_para_baixo($s3,corLaranja)
- 	move $s3, $v0
  	j sair2
  sair2:
  	get_return_address
