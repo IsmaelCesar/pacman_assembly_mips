@@ -140,10 +140,10 @@ loop_jogo:
 	jal inicializar_primeiro_estagio
 
 	loop_estagio_1:
-		#beq $s0,20,exit_loop_estagio_1
+		beq $s0,146,exit_loop_estagio_1
 		#mover_fantasmas($s0,5)
 			mover_pacman(1)
-			movimento_laranja(1)
+			#movimento_laranja(0)
 		#addi $s0,$s0,1
 		#addi $s0,$s0,1
 		j loop_estagio_1
@@ -151,10 +151,10 @@ loop_jogo:
 	
 	jal flush_mapa
 	#Apaga_os numeros
-	apagar_numero(4056)
-	apagar_numero(4028)
-	apagar_numero(4000)
-	apagar_numero(732)
+	#apagar_numero(4056)
+	#apagar_numero(4028)
+	#apagar_numero(4000)
+	#apagar_numero(732)
 	move $s0, $zero #zerando pontuacao para passar para o proximo estagio
 	jal flush_estagio
   
@@ -162,7 +162,7 @@ loop_jogo:
   
   
   loop_estagio_2:
-    beq $s0,20,exit_loop_estagio_2
+    beq $s0,136,exit_loop_estagio_2
     #mover_fantasmas($s0,5)
       mover_pacman(2)
     #addi $s0,$s0,1
