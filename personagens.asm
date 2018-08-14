@@ -475,3 +475,4 @@ tirar_fantasmas_caixa_function:
 	#############
 	get_return_address
 	jr $ra
+
