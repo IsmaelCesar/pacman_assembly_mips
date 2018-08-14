@@ -11,7 +11,7 @@
 .end_macro
 
 dentroDaCaixaM1_function:
-	save_return_address
+ 
 	loop_linha:
 		beq $t3, 3, soma
 		beq $a0, $t1, esta
@@ -40,7 +40,8 @@ sair:
 .macro verificandoMovimento(%pos, %movimento, %corBorda)
 	move $a0, %pos
 	move $a1, %movimento
-	la $a2, %corBorda
+	lw $a2, %corBorda
+	move $v0, $0
 	jal verificandoMovimento_function
 .end_macro
 verificandoMovimento_function:
@@ -51,25 +52,33 @@ verificandoMovimento_function:
 	beq $a1, 3, baixo
 esquerda:
 	addi $t0, $a0, -4 #verificando esquerda
-	beq  $t0, $a2, naoPode
+	addi $t0, $t0, 0x10010000
+	lw   $t1, 0($t0)
+	beq  $t1, $a2, naoPode
 	addi $v0, $0, 0
 	get_return_address
 	jr $ra
 direita:
 	addi $t0, $a0,  4 #verificando direita
-	beq  $t0, $a2, naoPode
+	addi $t0, $t0, 0x10010000
+	lw   $t1, 0 ($t0)
+	beq  $t1, $a2, naoPode
 	addi $v0, $0, 1
 	get_return_address
 	jr $ra
 cima:
-	addi $t0, $a0, 256 #verificando direita
-	beq  $t0, $a2, naoPode
+	addi $t0, $a0, -256 #verificando cima
+	addi $t0, $t0, 0x10010000
+	lw   $t1, 0($t0)
+	beq  $t1, $a2, naoPode
 	addi $v0, $0, 2
 	get_return_address
 	jr $ra
 baixo:
-	addi $t0, $a0, -256 #verificando direita
-	beq  $t0, $a2, naoPodeBaixo
+	addi $t0, $a0, 256 #verificando baixo
+	addi $t0, $t0, 0x10010000
+	lw   $t1, 0($t0)
+	beq  $t1, $a2, naoPodeBaixo
 	addi $v0, $0, 3
 	get_return_address
 	jr $ra
@@ -104,7 +113,8 @@ sairDaCaixaM1:
 	get_return_address
 	jr $ra
  movendoLaranja:
- 	gerarNumero
+ 	#gerarNumero
+ 	addi $v0, $0, 2
  	verificandoMovimento($s3, $v0, cor_mapa)
  	beq $v0, 0, moverEsquerdaLaranja
  	beq $v0, 1, moverDireitaLaranja

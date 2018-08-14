@@ -156,7 +156,20 @@ loop_jogo:
 	apagar_numero(4000)
 	apagar_numero(732)
 	move $s0, $zero #zerando pontuacao para passar para o proximo estagio
-	
+	jal flush_estagio
+  
+  jal inicializar_segundo_estagio
+  
+  
+  loop_estagio_2:
+    beq $s0,20,exit_loop_estagio_2
+    #mover_fantasmas($s0,5)
+      mover_pacman(2)
+    #addi $s0,$s0,1
+    j loop_estagio_2
+  exit_loop_estagio_2:
+  
+  jal flush_estagio
 		
  j loop_jogo
  		

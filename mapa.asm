@@ -236,6 +236,7 @@ sw   $ra,0($sp)
 	###########################
 	#      Desenhado comida   #
 	###########################
+	#colocar aqui
 	desenhar_comida(7432,7540,1)
 	#Sequencia de comandos para desenhar acomida
 	#Parte inferior do mapa
