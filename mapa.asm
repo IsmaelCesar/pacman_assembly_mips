@@ -1,4 +1,37 @@
+#########################################################
+#                  Como rodar? 				#
+#########################################################
+# Tamanho de pixel : 8x8				#
+# Dimensão do display: 512 x 256			#
+# valor ask cacacteres A = 41, S = 53, D = 44, F = 46   #
+#########################################################
+#   O módulo principal é o pacman, rodar ele primeiro   #
+#########################################################
+#   em "settings -> memory configuration" setar valor   #
+#   default.						#
+#########################################################
+#             Outras configurações			#
+#########################################################
+# $s7 -> Armazenará acor da comida, pro caso de um      #
+#        fantasma se mover sobre ela			#
+# $s6 -> Armazenará a posição do pacman			#
+# $s0 -> Guardará os pontons                            #
+# $s1,$s2,$s3,$s4 -> Guardará a posição da célula dos   #
+# 		     dos fantasmas no seu respectivo    #
+#		     estágio(Vermelho,Azul,Laranja,Rosa)#
+#########################################################
+#Macro para salvar endereço de retorno
+.macro save_return_address
+	addi $sp,$sp,-4
+	sw   $ra,0($sp)
+.end_macro
 
+#Macro para carregar endereço de retorno
+.macro get_return_address
+	lw   $ra,0($sp)
+	addi $sp,$sp,4
+.end_macro
+#########################################################
 #Procedimento para escrever linha por linha
 # $a0 -> Argumento com o endereço inicial
 # $a1 -> Argumento contendo endereço final
@@ -203,6 +236,7 @@ sw   $ra,0($sp)
 	###########################
 	#      Desenhado comida   #
 	###########################
+	#colocar aqui
 	desenhar_comida(7432,7540,1)
 	#Sequencia de comandos para desenhar acomida
 	#Parte inferior do mapa
@@ -407,4 +441,10 @@ sw   $ra,0($sp)
 
 	lw $ra, 0($sp)
 	addi $sp,$sp,4
+	jr $ra
+
+flush_mapa:
+	save_return_address
+	desenhar_obstaculo(260,30,30,corPreta, bitmap_address)
+	get_return_address
 	jr $ra

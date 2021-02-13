@@ -10,7 +10,16 @@
 #   em "settings -> memory configuration" setar valor   #
 #   default.						#
 #########################################################			
-   
+   #             Outras configurações			#
+#########################################################
+# $s7 -> Armazenará acor da comida, pro caso de um      #
+#        fantasma se mover sobre ela			#
+# $s6 -> Armazenará a posição do pacman			#
+# $s0 -> Guardará os pontons                            #
+# $s1,$s2,$s3,$s4 -> Guardará a posição da célula dos   #
+# 		     dos fantasmas no seu respectivo    #
+#		     estágio(Vermelho,Azul,Laranja,Rosa)#
+#########################################################
 ################## LETRAS ############################### 
 #Procedimento para desenhar a parte do lado
 # $a0 -> é endereço inicial da coluna
@@ -190,6 +199,7 @@ desenhar_vidas_function:
 	addi $sp,$sp,8
 	jr $ra	
 
+
 #Procedimento para apagar a vida do mapa
 # $a0 -> Argumento com o endereço inicial da caixinha 5x5 onde a vida está contida
 .macro apagar_vida(%endIni)
@@ -203,6 +213,7 @@ apagar_vida_function:
 	lw $ra,0($sp)
 	addi $sp,$sp,4
 	jr $ra
+
 
 ######################################################################################################
 
